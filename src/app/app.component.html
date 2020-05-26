@@ -1,42 +1,104 @@
 <h1>Люблю свою работу</h1>
-<div id="body-wrapper">
-  <div id="page" style="min-height: 2256px;">
-    <div id="main">
-      <div id="content" class="column" role="main">
-        <div id="schedule_main">
-          <div class="table-wrapper">
-            <div id="time">
-              <div style="width: 133px;"><span>8:45 - 10:20</span></div>
-              <div style="width: 133px;"><span>10:35 - 12:10</span></div>
-              <div style="width: 133px;"><span>12:25 - 14:00</span></div>
-              <div style="width: 133px;"><span>14:45 - 16:20</span></div>
-              <div style="width: 133px;"><span>16:35 - 18:10</span></div>
-              <div style="width: 133px;"><span>18:25 - 20:00</span></div>
-              <div class="end-card" style="width: 133px;"><span>20:15 - 21:50</span></div>
-            </div>
-            <div class="clear"></div>
-            <div class="card-line">
-              <div class="week-name"><label>ПН</label></div>
-              <app-card *ngFor="let iterCard of cards; let idx = index" [card]="iterCard"></app-card>
-            </div>
-            <div class="card-line">
-              <div class="week-name"><label>ВТ</label></div>
-            </div>
-            <div class="card-line">
-              <div class="week-name"><label>СР</label></div>
-            </div>
-            <div class="card-line">
-              <div class="week-name"><label>ЧТ</label></div>
-            </div>
-            <div class="card-line">
-              <div class="week-name"><label>ПТ</label></div>
-            </div>
-            <div class="card-line">
-              <div class="week-name"><label>СБ</label></div>
-            </div>
+
+<div class="page-wrappper">
+  <div class="table">
+    <div id="time">
+      <div><span>8:45 - 10:20</span></div>
+      <div><span>10:35 - 12:10</span></div>
+      <div><span>12:25 - 14:00</span></div>
+      <div><span>14:45 - 16:20</span></div>
+      <div><span>16:35 - 18:10</span></div>
+      <div><span>18:25 - 20:00</span></div>
+      <div class="end-card"><span>20:15 - 21:50</span></div>
+    </div>
+    <div class="clear"></div>
+    <div class="week-line">
+      <div class="week-name"><label>ПН</label></div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lesson">
+          Lorem ipsum dolor sit amet.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- <div id="page" style="min-height: 2256px;">
+  <div id="main">
+    <div id="content" class="column" role="main">
+      <div id="schedule_main">
+        <div id="table-wrapper">
+          <div id="time">
+            <div style="width: 133px;"><span>8:45 - 10:20</span></div>
+            <div style="width: 133px;"><span>10:35 - 12:10</span></div>
+            <div style="width: 133px;"><span>12:25 - 14:00</span></div>
+            <div style="width: 133px;"><span>14:45 - 16:20</span></div>
+            <div style="width: 133px;"><span>16:35 - 18:10</span></div>
+            <div style="width: 133px;"><span>18:25 - 20:00</span></div>
+            <div class="end-card" style="width: 133px;"><span>20:15 - 21:50</span></div>
+          </div>
+          <div class="clear"></div>
+          <div class="card-line">
+            <div class="week-name"><label>ПН</label></div>
+            <app-card *ngFor="let iterCard of cards; let idx = index" [card]="iterCard"></app-card>
+          </div>
+          <div class="card-line">
+            <div class="week-name"><label>ВТ</label></div>
+            <app-card *ngFor="let iterCard of cards; let idx = index" [card]="iterCard"></app-card>
+          </div>
+          <div class="card-line">
+            <div class="week-name"><label>СР</label></div>
+            <app-card *ngFor="let iterCard of cards; let idx = index" [card]="iterCard"></app-card>
+          </div>
+          <div class="card-line">
+            <div class="week-name"><label>ЧТ</label></div>
+          </div>
+          <div class="card-line">
+            <div class="week-name"><label>ПТ</label></div>
+          </div>
+          <div class="card-line">
+            <div class="week-name"><label>СБ</label></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div> -->

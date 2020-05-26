@@ -23,9 +23,6 @@ export class AppComponent {
     { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
     { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
     { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
-    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
-    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
-    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
     {
       subjName: 'Very looooooooong name',
       classNum: 3,
