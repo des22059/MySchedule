@@ -19,6 +19,13 @@ export class AppComponent {
   cards: Card[] = [
     { subjName: 'Name 1', classNum: 1, buildNum: 1, groupNum: 123 },
     { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
+    { subjName: 'Name 2', classNum: 2, buildNum: 1, groupNum: 1233 },
     {
       subjName: 'Very looooooooong name',
       classNum: 3,

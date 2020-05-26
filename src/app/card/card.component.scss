@@ -1,21 +1,24 @@
 .card {
-  padding: 0.5rem;
-  border: 1px dashed #ccc;
-  cursor: pointer;
-  overflow: hidden;
-  position: relative;
-  text-overflow: ellipsis;
-  color: #296d90;
-  font-size: 13px;
-  font-weight: bold;
+  .lessons_cel .all_lessons_info {
+    position: relative;
+    height: 100%;
+  }
+
+  .lessons_cell {
+    background-color: #ffe9c5;
+    border-radius: 2px;
+    position: relative;
+    float: left;
+    transition: background-color 0.5s;
+    cursor: pointer;
+    margin-right: 2px;
+    height: 100%;
+    width: 13.6%;
+  }
 
   label {
     height: 60px;
     max-height: 60px;
-  }
-
-  .text {
-    font-style: 1.5rem;
   }
 
   .auditories {
