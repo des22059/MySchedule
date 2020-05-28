@@ -1,1 +1,17 @@
-<p>schedule works!</p>
+<div class="page-wrapper">
+    <div class="table">
+        <div id="time">
+            <div *ngFor="let time of lessonsTime; let i = index">
+                <span>{{lessonsTime[i]}}</span>
+            </div>
+        </div>
+        <div class="week-line" *ngFor="let weekLine of schedule; let i = index">
+            <div class="week-name"><label>{{weekNames[i]}}</label></div>
+            <div class="cell" *ngFor="let cell of weekLine.weekLines">
+                <div class="lesson" *ngFor="let lesson of cell.cells">
+                    {{lesson.title}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
