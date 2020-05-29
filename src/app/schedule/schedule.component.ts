@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../shared/date.service';
-
-interface Lesson {
-  value: moment.Moment;
-  title: string;
-}
+import { Lesson } from '../lesson';
+import { LESSONS } from '../mock-lessons';
 
 interface Cell {
   lessons: Lesson[];
@@ -22,6 +19,7 @@ interface WeekLine {
 })
 export class ScheduleComponent implements OnInit {
   constructor(public dateService: DateService) {}
+  lessons = LESSONS;
   weekNames: string[] = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
   lessonsTime: string[] = [
     '8:45 - 10:20',
@@ -46,16 +44,18 @@ export class ScheduleComponent implements OnInit {
           .fill(0)
           .map(() => {
             return {
-              cells: Array(Math.floor(Math.random() * (+4 - +0)))
-                .fill(0)
-                .map(() => {
-                  const title = 'Lorem ipsum dolor sit amet.';
-                  return { title };
-                }),
+              cells: Array().fill(0),
             };
           }),
       });
     }
+
+    this.lessons.forEach((lesson) => {
+      lesson.position.forEach((pos) => {
+        schedule[lesson.day].weekLines[pos].cells.push(lesson);
+      });
+    });
+
     this.schedule = schedule;
   }
 }

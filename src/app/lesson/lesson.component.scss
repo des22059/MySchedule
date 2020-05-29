@@ -1,0 +1,31 @@
+* {
+  word-wrap: break-word;
+}
+
+.title-wrap {
+  overflow: hidden;
+  padding: 0 0.2rem;
+  .title {
+    text-align: left;
+    word-wrap: break-word;
+    max-height: 80px;
+  }
+}
+.lesson-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  padding: 0 0.2rem;
+  .type {
+    font-size: 0.8rem !important;
+    line-height: 0.5rem !important;
+    display: flex;
+  }
+
+  .place {
+    font-size: 0.8rem;
+    line-height: 0.5rem;
+    display: flex !important;
+  }
+}

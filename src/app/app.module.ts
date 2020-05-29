@@ -9,6 +9,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { SelectorComponent } from './selector/selector.component';
 import { MomentPipe } from './shared/moment.pipe';
 import { WeekPipe } from './shared/moment.weekPipe';
+import { LessonComponent } from './lesson/lesson.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -19,6 +20,7 @@ registerLocaleData(localeRu, 'ru');
     SelectorComponent,
     MomentPipe,
     WeekPipe,
+    LessonComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

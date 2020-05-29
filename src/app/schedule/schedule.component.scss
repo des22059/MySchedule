@@ -76,10 +76,18 @@
 .lesson {
   display: flex;
   flex: 1;
+  width: 124px;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-color: #fa9191;
+  justify-content: center;
   height: 100%;
   margin-bottom: 2px;
+}
+
+.inner-lesson {
+  height: 100%;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
