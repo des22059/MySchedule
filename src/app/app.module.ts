@@ -17,12 +17,16 @@ import { ForStudentsComponent } from './for-students/for-students.component';
 
 import { MomentPipe } from './shared/moment.pipe';
 import { WeekPipe } from './shared/moment.weekPipe';
+import { AuthModule } from './auth/auth.module';
+import { ForTeachersComponent } from './for-teachers/for-teachers.component';
 
 registerLocaleData(localeRu, 'ru');
 
 const appRouts: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'for-students', component: ForStudentsComponent },
+  { path: 'for-teachers', component: ForTeachersComponent },
+  // { path: 'login', component: AuthComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -37,8 +41,9 @@ const appRouts: Routes = [
     HomeComponent,
     PageNotFoundComponent,
     ForStudentsComponent,
+    ForTeachersComponent,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(appRouts)],
+  imports: [BrowserModule, RouterModule.forRoot(appRouts), AuthModule],
   providers: [],
   bootstrap: [AppComponent],
 })
