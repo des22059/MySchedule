@@ -1,0 +1,23 @@
+.form-wrapper {
+  // margin-top: 10rem;
+  background-color: white;
+
+  .form-body {
+    -webkit-box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.26);
+    -moz-box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.26);
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.26);
+  }
+  //   .form-row {
+  //     background-color: #fa9191;
+  //   }
+
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: gray;
+    opacity: 1; /* Firefox */
+  }
+
+  //   input div.inner-input {
+  //     border: 1px white;
+  //   }
+}

@@ -1,0 +1,51 @@
+<div class="row form-wrapper">
+    <div class="col s8 offset-s2 form-body" style="padding: 0;">
+        <div class="card" style="margin-top: 0;">
+            <div class="sm-jumbotron teal lighten-2 center-align">
+                <h3 style="color:#fff">User registration</h3>
+            </div>
+            <form class="col s12" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input class="validate" type="text" name="login" #UserName="ngModel" [(ngModel)]="user.login"
+                            required>
+                        <label data-error="Required field!">UserName</label>
+                        <span class="helper-text" data-error="UserName is required field!"></span>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="email" class="validate" name="mail" #Email="ngModel" [(ngModel)]="user.mail"
+                            required>
+                        <label data-error="Required field!">Email</label>
+                        <span class="helper-text" data-error="Invalid Email!"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="password" class="validate" name="password" #Password="ngModel"
+                            [(ngModel)]="user.password" required minlength="8">
+                        <label data-error="Required field!">Password</label>
+                        <span class="helper-text"
+                            [attr.data-error]="Password.errors!=null?(Password.errors.required?'Required field!':'Minimum 8 characters!'):''"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <button [disabled]="!userRegistrationForm.valid" class="btn-primary btn-large"
+                            style="color:#fff; width: 100%;" type="submit">Submit</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <button class="btn-primary btn-large" routerLink="/home"
+                            style="color:#fff; width: 100%;">Home</button>
+                    </div>
+                    <div class="input-field col s6">
+                        <button class="btn-primary btn-large" routerLink="/reset-password"
+                            style="color:#fff; width: 100%;">Forgot
+                            password</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

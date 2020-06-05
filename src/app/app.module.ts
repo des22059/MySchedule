@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 
+import { FormsModule } from '@angular/forms';
+
 import { Routes, RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,11 +16,18 @@ import { LessonComponent } from './lesson/lesson.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ForStudentsComponent } from './for-students/for-students.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MomentPipe } from './shared/moment.pipe';
 import { WeekPipe } from './shared/moment.weekPipe';
-import { AuthModule } from './auth/auth.module';
+// import { AuthModule } from './auth/auth.module';
 import { ForTeachersComponent } from './for-teachers/for-teachers.component';
+import { UserComponent } from './user/user.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { SignInComponent } from './user/sign-in/sign-in.component';
+import { UserService } from './shared/user.service';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -26,7 +35,7 @@ const appRouts: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'for-students', component: ForStudentsComponent },
   { path: 'for-teachers', component: ForTeachersComponent },
-  // { path: 'login', component: AuthComponent },
+  { path: 'login', component: SignUpComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 
@@ -42,9 +51,19 @@ const appRouts: Routes = [
     PageNotFoundComponent,
     ForStudentsComponent,
     ForTeachersComponent,
+    UserComponent,
+    SignUpComponent,
+    SignInComponent,
   ],
-  imports: [BrowserModule, RouterModule.forRoot(appRouts), AuthModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(appRouts),
+    FormsModule,
+    HttpClientModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
+  ],
+  providers: [UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
