@@ -13,6 +13,7 @@ import { ResponseAPI } from '../shared/responseAPI';
 export class SignUpComponent implements OnInit {
   user = new User();
   emailPattern: '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$';
+  rolesSelector = [{id:"1id", role: "Admin"}, {id:"2id", role: "Worker"}, {id:"3id", role: "TestRole"}]
   constructor(
     private userService: UserService,
     private toastr: ToastrService
@@ -29,11 +30,11 @@ export class SignUpComponent implements OnInit {
         login: '',
         password: '',
         mail: '',
-        roles: ['6625810a-3655-4da2-b738-76f27e4d543b'],
+        role: '',
       };
     }
   }
-
+//'6625810a-3655-4da2-b738-76f27e4d543b'
   OnSubmit(form: NgForm) {
     this.userService.registerUser(form.value).subscribe((data: ResponseAPI) => {
       console.log(data);

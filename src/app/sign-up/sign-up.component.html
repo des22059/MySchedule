@@ -9,13 +9,13 @@
                     <div class="input-field col s6">
                         <input class="validate" type="text" name="login" #UserName="ngModel" [(ngModel)]="user.login"
                             required>
-                        <label data-error="Required field!">UserName</label>
+                        <label class="label-no-click" data-error="Required field!">UserName</label>
                         <span class="helper-text" data-error="UserName is required field!"></span>
                     </div>
                     <div class="input-field col s6">
                         <input type="email" class="validate" name="mail" #Email="ngModel" [(ngModel)]="user.mail"
                             required>
-                        <label data-error="Required field!">Email</label>
+                        <label class="label-no-click" data-error="Required field!">Email</label>
                         <span class="helper-text" data-error="Invalid Email!"></span>
                     </div>
                 </div>
@@ -23,10 +23,22 @@
                     <div class="input-field col s12">
                         <input type="password" class="validate" name="password" #Password="ngModel"
                             [(ngModel)]="user.password" required minlength="8">
-                        <label data-error="Required field!">Password</label>
+                        <label class="label-no-click" data-error="Required field!">Password</label>
                         <span class="helper-text"
                             [attr.data-error]="Password.errors!=null?(Password.errors.required?'Required field!':'Minimum 8 characters!'):''"></span>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col s6 offset-s3">
+                    <div *ngFor="let roles of rolesSelector;">
+                    <p>
+                        <label>
+                            <input name="role" type="radio" value={{roles.id}} [(ngModel)]="user.role" checked />
+                            <span>{{roles.role}}</span>
+                          </label>
+                      </p>
+                    </div>
+                </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">

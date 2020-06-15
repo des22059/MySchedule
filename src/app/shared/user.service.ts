@@ -15,6 +15,8 @@ export class UserService {
     // let myHeaders = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     // myHeaders.set('Content-Type', 'application/json');
 
+    // myRoles:
+
     const headerDict = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -24,12 +26,12 @@ export class UserService {
     const requestOptions = {
       headers: new HttpHeaders(headerDict),
     };
-
+    console.log(user)
     const body: User = {
       login: user.login,
       password: user.password,
       mail: user.mail,
-      roles: ['6625810a-3655-4da2-b738-76f27e4d543b'],
+      role: user.role,
     };
     console.log(JSON.stringify(body));
     return this.http.post(
