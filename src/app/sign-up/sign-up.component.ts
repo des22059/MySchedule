@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UserService } from '../shared/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ResponseAPI } from '../shared/responseAPI';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,16 +12,37 @@ import { ResponseAPI } from '../shared/responseAPI';
   styleUrls: ['./sign-up.component.scss'],
 })
 export class SignUpComponent implements OnInit {
+  readonly rootUrl = 'https://my-schedule-2020.herokuapp.com';
   user = new User();
+  headerDict: {};
+  requestOptions: {};
   emailPattern: '^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$';
-  rolesSelector = [{id:"1id", role: "Admin"}, {id:"2id", role: "Worker"}, {id:"3id", role: "TestRole"}]
+  rolesSelector: {};
+
   constructor(
     private userService: UserService,
+    private http: HttpClient,
     private toastr: ToastrService
-  ) {}
+  ) {
+    this.headerDict = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    };
+    this.requestOptions = {
+      headers: new HttpHeaders(this.headerDict),
+    };
+  }
 
   ngOnInit(): void {
     this.resetForm();
+    this.http
+      .get(this.rootUrl + '/api/role', this.requestOptions)
+      .subscribe((data: ResponseAPI) => {
+        //console.log(data);
+        this.rolesSelector = data.result;
+        console.log(this.rolesSelector);
+      });
   }
 
   resetForm(form?: NgForm) {
@@ -34,7 +56,7 @@ export class SignUpComponent implements OnInit {
       };
     }
   }
-//'6625810a-3655-4da2-b738-76f27e4d543b'
+  //'6625810a-3655-4da2-b738-76f27e4d543b'
   OnSubmit(form: NgForm) {
     this.userService.registerUser(form.value).subscribe((data: ResponseAPI) => {
       console.log(data);

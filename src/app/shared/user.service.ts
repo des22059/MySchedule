@@ -12,21 +12,17 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   registerUser(user: User) {
-    // let myHeaders = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    // myHeaders.set('Content-Type', 'application/json');
-
-    // myRoles:
-
     const headerDict = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'Access-Control-Allow-Headers': 'Content-Type',
+      // 'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Origin': '*',
     };
 
     const requestOptions = {
       headers: new HttpHeaders(headerDict),
     };
-    console.log(user)
+    console.log(user);
     const body: User = {
       login: user.login,
       password: user.password,

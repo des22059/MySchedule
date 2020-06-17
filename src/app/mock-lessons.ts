@@ -21,4 +21,14 @@ export const LESSONS: Lesson[] = [
     week: 22,
     day: 0,
   },
+  {
+    title: 'Test name',
+    teacher: { surname: 'Surname2', name: 'Name2', patronymic: 'Patronymic2' },
+    position: [2, 2, 4, 5],
+    type: 'Practice',
+    audience: 34,
+    building: 2,
+    week: 22,
+    day: 1,
+  },
 ];

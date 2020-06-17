@@ -1,63 +1,61 @@
-<div class="row form-wrapper">
-    <div class="col s8 offset-s2 form-body" style="padding: 0;">
-        <div class="card" style="margin-top: 0;">
-            <div class="sm-jumbotron teal lighten-2 center-align">
-                <h3 style="color:#fff">User registration</h3>
-            </div>
-            <form class="col s12" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input class="validate" type="text" name="login" #UserName="ngModel" [(ngModel)]="user.login"
-                            required>
-                        <label class="label-no-click" data-error="Required field!">UserName</label>
-                        <span class="helper-text" data-error="UserName is required field!"></span>
-                    </div>
-                    <div class="input-field col s6">
-                        <input type="email" class="validate" name="mail" #Email="ngModel" [(ngModel)]="user.mail"
-                            required>
-                        <label class="label-no-click" data-error="Required field!">Email</label>
-                        <span class="helper-text" data-error="Invalid Email!"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input type="password" class="validate" name="password" #Password="ngModel"
-                            [(ngModel)]="user.password" required minlength="8">
-                        <label class="label-no-click" data-error="Required field!">Password</label>
-                        <span class="helper-text"
-                            [attr.data-error]="Password.errors!=null?(Password.errors.required?'Required field!':'Minimum 8 characters!'):''"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s6 offset-s3">
-                    <div *ngFor="let roles of rolesSelector;">
-                    <p>
-                        <label>
-                            <input name="role" type="radio" value={{roles.id}} [(ngModel)]="user.role" checked />
-                            <span>{{roles.role}}</span>
-                          </label>
-                      </p>
-                    </div>
-                </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <button [disabled]="!userRegistrationForm.valid" class="btn-primary btn-large"
-                            style="color:#fff; width: 100%;" type="submit">Submit</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <button class="btn-primary btn-large" routerLink="/home"
-                            style="color:#fff; width: 100%;">Home</button>
-                    </div>
-                    <div class="input-field col s6">
-                        <button class="btn-primary btn-large" routerLink="/reset-password"
-                            style="color:#fff; width: 100%;">Forgot
-                            password</button>
-                    </div>
-                </div>
-            </form>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2 form-body">
+      <div class="card p-5">
+        <div class="sm-jumbotron lighten-2 text-center">
+          <h3 style="color: #fff;">User registration</h3>
         </div>
+        <form class="col-md-12" #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)" novalidate>
+          <div class="form-group">
+            <label for="exampleInputUserName1">Username</label>
+            <input type="text" class="form-control validate" name="login" #UserName="ngModel" [(ngModel)]="user.login"
+              placeholder="Enter username" required />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" name="mail" #Email="ngModel" [(ngModel)]="user.mail" required
+              placeholder="Enter email" />
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control validate" name="password" #Password="ngModel"
+              [(ngModel)]="user.password" required minlength="8" placeholder="Password" />
+          </div>
+          <div class="row">
+            <div class="col-md-6 offset-md-3">
+              <div *ngFor="let role of rolesSelector">
+                <p>
+                  <label>
+                    <input name="role" type="radio" value="{{ role.id }}" [(ngModel)]="user.role" checked required />
+                    <span> {{ role.role }}</span>
+                  </label>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col-md-12">
+              <button [disabled]="!userRegistrationForm.valid" class="btn btn-primary btn-large mb-3"
+                style="color: #fff; width: 100%;" type="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col-md-6">
+              <button class="btn btn-primary btn-large" routerLink="/home" style="color: #fff; width: 100%;">
+                Home
+              </button>
+            </div>
+            <div class="input-field col-md-6">
+              <button class="btn btn-primary btn-large" routerLink="/reset-password" style="color: #fff; width: 100%;">
+                Forgot password
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
