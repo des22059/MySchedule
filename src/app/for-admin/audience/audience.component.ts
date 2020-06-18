@@ -2,23 +2,25 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ResponseAPI } from '../../shared/responseAPI';
 import { ToastrService } from 'ngx-toastr';
+import { Audience } from '../audience/audience.model';
 import { Building } from '../buildings/building.model';
-
 @Component({
-  selector: 'app-buildings',
-  templateUrl: './buildings.component.html',
-  styleUrls: ['./buildings.component.scss'],
+  selector: 'app-audience',
+  templateUrl: './audience.component.html',
+  styleUrls: ['./audience.component.scss'],
 })
-export class BuildingsComponent implements OnInit {
+export class AudienceComponent implements OnInit {
   readonly rootUrl = 'https://my-schedule-2020.herokuapp.com';
   headerDict: {};
   requestOptions: {};
 
+  audience: {};
   buildings: {};
-  titleText: string;
-  addressText: string;
+  audienceNumberText: string;
+  building: string;
+
+  currentBuilding: Building;
   currentId: string;
-  selectedTitle: string;
   forEdit = false;
 
   @ViewChild('closebutton') closebutton;
@@ -37,10 +39,16 @@ export class BuildingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
+      .get(this.rootUrl + '/api/audience', this.requestOptions)
+      .subscribe((data: ResponseAPI) => {
+        this.audience = data.result;
+        console.log(this.audience);
+      });
+    this.http
       .get(this.rootUrl + '/api/building', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
-        console.log(data);
         this.buildings = data.result;
+        console.log(this.buildings);
       });
   }
 
@@ -48,41 +56,46 @@ export class BuildingsComponent implements OnInit {
     this.forEdit = forEdit;
   }
 
-  openModalForEditing(building: Building) {
-    this.titleText = building.title;
-    this.addressText = building.address;
-    this.currentId = building.id;
+  log() {
+    console.log(this.building);
   }
 
-  opemModalForDelete(building: Building) {
-    this.selectedTitle = building.title;
-    this.currentId = building.id;
+  openModalForEditing(audience: Audience) {
+    //console.log(audience.building.title);
+    this.currentId = audience.id;
+    this.audienceNumberText = audience.audienceNumber;
+    this.currentBuilding = audience.building;
+    this.building = audience.building.id;
   }
 
-  updateBuilding() {
+  opemModalForDelete(audience: Audience) {
+    this.audienceNumberText = audience.audienceNumber;
+    this.currentId = audience.id;
+  }
+
+  updateAudience() {
     if (this.forEdit) {
       const body = {
-        title: this.titleText,
-        address: this.addressText,
+        audienceNumber: this.audienceNumberText,
+        building: this.building,
       };
       console.log(JSON.stringify(body));
       return this.http
         .put(
-          this.rootUrl + '/api/building/' + this.currentId,
+          this.rootUrl + '/api/audience/' + this.currentId,
           JSON.stringify(body),
           this.requestOptions
         )
         .subscribe((data: ResponseAPI) => {
           console.log(data);
           if (data.info.statusCode == 200) {
-            this.titleText = '';
-            this.addressText = '';
-            this.toastr.success('Building updated!');
+            this.audienceNumberText = '';
+            this.toastr.success('Audience updated!');
             this.http
-              .get(this.rootUrl + '/api/building', this.requestOptions)
+              .get(this.rootUrl + '/api/audience', this.requestOptions)
               .subscribe((data: ResponseAPI) => {
                 console.log(data);
-                this.buildings = data.result;
+                this.audience = data.result;
               });
             this.closebutton.nativeElement.click();
           } else {
@@ -90,26 +103,28 @@ export class BuildingsComponent implements OnInit {
           }
         });
     } else {
-      if (this.titleText && this.addressText) {
-        const body = { title: this.titleText, address: this.addressText };
+      if (this.audienceNumberText && this.building) {
+        const body = {
+          audienceNumber: this.audienceNumberText,
+          building: this.building,
+        };
         console.log(JSON.stringify(body));
         return this.http
           .post(
-            this.rootUrl + '/api/building',
+            this.rootUrl + '/api/audience',
             JSON.stringify(body),
             this.requestOptions
           )
           .subscribe((data: ResponseAPI) => {
             console.log(data);
             if (data.info.statusCode == 200) {
-              this.titleText = '';
-              this.addressText = '';
-              this.toastr.success('Building created!');
+              this.audienceNumberText = '';
+              this.toastr.success('Audience created!');
               this.http
-                .get(this.rootUrl + '/api/building', this.requestOptions)
+                .get(this.rootUrl + '/api/audience', this.requestOptions)
                 .subscribe((data: ResponseAPI) => {
                   console.log(data);
-                  this.buildings = data.result;
+                  this.audience = data.result;
                 });
               this.closebutton.nativeElement.click();
             } else {
@@ -122,21 +137,21 @@ export class BuildingsComponent implements OnInit {
     }
   }
 
-  deleteBuilding(id: string) {
+  deleteAudience(id: string) {
     return this.http
       .delete(
-        this.rootUrl + '/api/building/' + this.currentId,
+        this.rootUrl + '/api/audience/' + this.currentId,
         this.requestOptions
       )
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {
-          this.toastr.success('Building deleted!');
+          this.toastr.success('Audience deleted!');
           this.http
-            .get(this.rootUrl + '/api/building', this.requestOptions)
+            .get(this.rootUrl + '/api/audience', this.requestOptions)
             .subscribe((data: ResponseAPI) => {
               console.log(data);
-              this.buildings = data.result;
+              this.audience = data.result;
             });
           this.closebuttonDelete.nativeElement.click();
         } else {

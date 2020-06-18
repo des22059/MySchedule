@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-for-admin',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./for-admin.component.scss'],
 })
 export class ForAdminComponent implements OnInit {
-  constructor() {}
+  constructor(private router: Router) {}
   ngOnInit(): void {}
+  toBuildings() {}
 }

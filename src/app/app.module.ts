@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { ForAdminComponent } from './for-admin/for-admin.component';
 import { BuildingsComponent } from './for-admin/buildings/buildings.component';
+import { AudienceComponent } from './for-admin/audience/audience.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -36,19 +37,17 @@ const appRouts: Routes = [
     component: ForAdminComponent,
     children: [
       {
-        path: ':buildings',
+        path: 'audience',
+        component: AudienceComponent,
+      },
+      {
+        path: 'buildings',
         component: BuildingsComponent,
-        outlet: 'adminCategories',
       },
     ],
   },
   { path: 'login', component: SignUpComponent },
   { path: '**', component: PageNotFoundComponent },
-  // {
-  //   path: 'buildings',
-  //   component: BuildingsComponent,
-  //   outlet: 'adminCategories',
-  // },
 ];
 
 @NgModule({
@@ -68,6 +67,7 @@ const appRouts: Routes = [
     SignInComponent,
     ForAdminComponent,
     BuildingsComponent,
+    AudienceComponent,
   ],
   imports: [
     BrowserModule,

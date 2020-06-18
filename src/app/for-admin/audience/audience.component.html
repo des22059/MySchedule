@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalUpdate"
+                (click)="openModal(false);">Создать новый</button>
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUpdateTitle">
+                                {{forEdit ? 'Редактировать выбранную' : 'Создать новую аудиторию'}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
+                                (click)="this.createForm.reset();">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #createForm="ngForm">
+                                <div class="form-group">
+                                    <label for="buildingTitleInput">Номер аудитории</label>
+                                    <input type="text" [(ngModel)]="audienceNumberText" class="form-control"
+                                        name="audNumber" id="buildingTitleInput" placeholder="Enter building title"
+                                        #audNumber="ngModel" maxlength="5" required>
+                                    <div *ngIf="audNumber.errors && (audNumber.dirty || audNumber.touched)">
+                                        <div [hidden]="!audNumber.errors.required">
+                                            <p class="m-1" style="color:brown">Поле название - обязательное!</p>
+                                        </div>
+                                        <div [hidden]="!audNumber.errors.maxlength">
+                                            <p class="m-1" style="color:brown">Длина не более 5 символов!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Выберите корпус для аудитории</label>
+                                    <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="building"
+                                        (change)="log()" name="selector" #buildingSelect="ngModel" required>
+                                        <option *ngFor="let building of buildings; let i = index" [value]="building.id">
+                                            {{building.title}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="buildingSelect.errors && (buildingSelect.dirty || buildingSelect.touched)">
+                                        <div [hidden]="!buildingSelect.errors.required">
+                                            <p class="m-1" style="color:brown">Нужно выбрать корпус!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        (click)="createForm.reset();">Закрыть</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        [disabled]="createForm.form.invalid"
+                                        (click)="
+                                        updateAudience(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Название аудитории</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Корпус</h5>
+                </div>
+                <div class="col-md-6">
+                    <h5>Действия</h5>
+                </div>
+            </div>
+            <hr>
+            <div *ngFor="let aud of audience; let i = index">
+                <div class="row">
+                    <div class="col-md-3 content">
+                        {{aud.audienceNumber}}
+                    </div>
+                    <div class="col-md-3 content">
+                        {{aud.building.title}}
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
+                            (click)="openModal(true); openModalForEditing(aud)">Редактировать</button>
+                        <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
+                            (click)="opemModalForDelete(aud)">Удалить</button>
+                        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+                            aria-labelledby="modalDelete" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранную аудиторию
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            #closebuttonDelete>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Вы уверены что хотите удалить {{audienceNumberText}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Нет</button>
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="deleteAudience(aud.id)">Да</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

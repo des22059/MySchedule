@@ -2,9 +2,8 @@
   <div class="row">
     <div class="col-md-2">
       <button class="btn btn-primary mb-1 w-100">Факультеты</button>
-      <button class="btn btn-primary mb-1 w-100"
-        [routerLink]="['/for-admin', { outlets: { adminCategories: 'buildings' }}]">Корпуса</button>
-      <button class="btn btn-primary mb-1 w-100">Аудитории</button>
+      <button class="btn btn-primary mb-1 w-100" routerLink="./buildings">Корпуса</button>
+      <button class="btn btn-primary mb-1 w-100" routerLink="./audience">Аудитории</button>
       <button class="btn btn-primary mb-1 w-100">Предметы</button>
       <button class="btn btn-primary mb-1 w-100">Типы занятий</button>
       <button class="btn btn-primary mb-1 w-100">Группы</button>
@@ -14,7 +13,7 @@
       <button class="btn btn-success mb-1 w-100" routerLink="/home">На главную</button>
     </div>
     <div class="col-10">
-      <router-outlet name="adminCategories"></router-outlet>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
