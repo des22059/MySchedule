@@ -39,13 +39,13 @@ export class AudienceComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
-      .get(this.rootUrl + '/api/audience', this.requestOptions)
+      .get(this.rootUrl + '/api/audiences', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         this.audience = data.result;
         console.log(this.audience);
       });
     this.http
-      .get(this.rootUrl + '/api/building', this.requestOptions)
+      .get(this.rootUrl + '/api/buildings', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         this.buildings = data.result;
         console.log(this.buildings);
@@ -82,7 +82,7 @@ export class AudienceComponent implements OnInit {
       console.log(JSON.stringify(body));
       return this.http
         .put(
-          this.rootUrl + '/api/audience/' + this.currentId,
+          this.rootUrl + '/api/audiences/' + this.currentId,
           JSON.stringify(body),
           this.requestOptions
         )
@@ -92,7 +92,7 @@ export class AudienceComponent implements OnInit {
             this.audienceNumberText = '';
             this.toastr.success('Audience updated!');
             this.http
-              .get(this.rootUrl + '/api/audience', this.requestOptions)
+              .get(this.rootUrl + '/api/audiences', this.requestOptions)
               .subscribe((data: ResponseAPI) => {
                 console.log(data);
                 this.audience = data.result;
@@ -111,7 +111,7 @@ export class AudienceComponent implements OnInit {
         console.log(JSON.stringify(body));
         return this.http
           .post(
-            this.rootUrl + '/api/audience',
+            this.rootUrl + '/api/audiences',
             JSON.stringify(body),
             this.requestOptions
           )
@@ -121,7 +121,7 @@ export class AudienceComponent implements OnInit {
               this.audienceNumberText = '';
               this.toastr.success('Audience created!');
               this.http
-                .get(this.rootUrl + '/api/audience', this.requestOptions)
+                .get(this.rootUrl + '/api/audiences', this.requestOptions)
                 .subscribe((data: ResponseAPI) => {
                   console.log(data);
                   this.audience = data.result;
@@ -140,7 +140,7 @@ export class AudienceComponent implements OnInit {
   deleteAudience(id: string) {
     return this.http
       .delete(
-        this.rootUrl + '/api/audience/' + this.currentId,
+        this.rootUrl + '/api/audiences/' + this.currentId,
         this.requestOptions
       )
       .subscribe((data: ResponseAPI) => {
@@ -148,7 +148,7 @@ export class AudienceComponent implements OnInit {
         if (data.info.statusCode == 200) {
           this.toastr.success('Audience deleted!');
           this.http
-            .get(this.rootUrl + '/api/audience', this.requestOptions)
+            .get(this.rootUrl + '/api/audiences', this.requestOptions)
             .subscribe((data: ResponseAPI) => {
               console.log(data);
               this.audience = data.result;

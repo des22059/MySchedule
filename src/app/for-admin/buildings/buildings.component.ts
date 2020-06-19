@@ -37,7 +37,7 @@ export class BuildingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
-      .get(this.rootUrl + '/api/building', this.requestOptions)
+      .get(this.rootUrl + '/api/buildings', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         this.buildings = data.result;
@@ -68,7 +68,7 @@ export class BuildingsComponent implements OnInit {
       console.log(JSON.stringify(body));
       return this.http
         .put(
-          this.rootUrl + '/api/building/' + this.currentId,
+          this.rootUrl + '/api/buildings/' + this.currentId,
           JSON.stringify(body),
           this.requestOptions
         )
@@ -79,7 +79,7 @@ export class BuildingsComponent implements OnInit {
             this.addressText = '';
             this.toastr.success('Building updated!');
             this.http
-              .get(this.rootUrl + '/api/building', this.requestOptions)
+              .get(this.rootUrl + '/api/buildings', this.requestOptions)
               .subscribe((data: ResponseAPI) => {
                 console.log(data);
                 this.buildings = data.result;
@@ -95,7 +95,7 @@ export class BuildingsComponent implements OnInit {
         console.log(JSON.stringify(body));
         return this.http
           .post(
-            this.rootUrl + '/api/building',
+            this.rootUrl + '/api/buildings',
             JSON.stringify(body),
             this.requestOptions
           )
@@ -106,7 +106,7 @@ export class BuildingsComponent implements OnInit {
               this.addressText = '';
               this.toastr.success('Building created!');
               this.http
-                .get(this.rootUrl + '/api/building', this.requestOptions)
+                .get(this.rootUrl + '/api/buildings', this.requestOptions)
                 .subscribe((data: ResponseAPI) => {
                   console.log(data);
                   this.buildings = data.result;
@@ -125,7 +125,7 @@ export class BuildingsComponent implements OnInit {
   deleteBuilding(id: string) {
     return this.http
       .delete(
-        this.rootUrl + '/api/building/' + this.currentId,
+        this.rootUrl + '/api/buildings/' + this.currentId,
         this.requestOptions
       )
       .subscribe((data: ResponseAPI) => {
@@ -133,7 +133,7 @@ export class BuildingsComponent implements OnInit {
         if (data.info.statusCode == 200) {
           this.toastr.success('Building deleted!');
           this.http
-            .get(this.rootUrl + '/api/building', this.requestOptions)
+            .get(this.rootUrl + '/api/buildings', this.requestOptions)
             .subscribe((data: ResponseAPI) => {
               console.log(data);
               this.buildings = data.result;

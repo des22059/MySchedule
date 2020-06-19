@@ -37,7 +37,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     this.resetForm();
     this.http
-      .get(this.rootUrl + '/api/role', this.requestOptions)
+      .get(this.rootUrl + '/api/roles', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         //console.log(data);
         this.rolesSelector = data.result;

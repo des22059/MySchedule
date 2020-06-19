@@ -37,7 +37,7 @@ const appRouts: Routes = [
     component: ForAdminComponent,
     children: [
       {
-        path: 'audience',
+        path: 'audiences',
         component: AudienceComponent,
       },
       {

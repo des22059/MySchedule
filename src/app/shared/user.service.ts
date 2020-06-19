@@ -31,7 +31,7 @@ export class UserService {
     };
     console.log(JSON.stringify(body));
     return this.http.post(
-      this.rootUrl + '/api/user',
+      this.rootUrl + '/api/users',
       JSON.stringify(body),
       requestOptions
     );
