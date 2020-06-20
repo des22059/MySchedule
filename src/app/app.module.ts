@@ -25,6 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ForAdminComponent } from './for-admin/for-admin.component';
 import { BuildingsComponent } from './for-admin/buildings/buildings.component';
 import { AudienceComponent } from './for-admin/audience/audience.component';
+import { SubjectsComponent } from './for-admin/subjects/subjects.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -43,6 +44,10 @@ const appRouts: Routes = [
       {
         path: 'buildings',
         component: BuildingsComponent,
+      },
+      {
+        path: 'subjects',
+        component: SubjectsComponent,
       },
     ],
   },
@@ -68,6 +73,7 @@ const appRouts: Routes = [
     ForAdminComponent,
     BuildingsComponent,
     AudienceComponent,
+    SubjectsComponent,
   ],
   imports: [
     BrowserModule,

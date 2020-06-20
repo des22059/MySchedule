@@ -2,21 +2,20 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ResponseAPI } from '../../shared/responseAPI';
 import { ToastrService } from 'ngx-toastr';
-import { Building } from '../buildings/building.model';
+import { Subject } from '../subjects/subject.model';
 
 @Component({
-  selector: 'app-buildings',
-  templateUrl: './buildings.component.html',
-  styleUrls: ['./buildings.component.scss'],
+  selector: 'app-subjects',
+  templateUrl: './subjects.component.html',
+  styleUrls: ['./subjects.component.scss'],
 })
-export class BuildingsComponent implements OnInit {
+export class SubjectsComponent implements OnInit {
   readonly rootUrl = 'https://my-schedule-2020.herokuapp.com';
   headerDict: {};
   requestOptions: {};
 
-  buildings: {};
+  subjects: {};
   titleText: string;
-  addressText: string;
   currentId: string;
   selectedTitle: string;
   forEdit = false;
@@ -37,10 +36,10 @@ export class BuildingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.http
-      .get(this.rootUrl + '/api/buildings', this.requestOptions)
+      .get(this.rootUrl + '/api/subjects', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         console.log(data);
-        this.buildings = data.result;
+        this.subjects = data.result;
       });
   }
 
@@ -48,27 +47,25 @@ export class BuildingsComponent implements OnInit {
     this.forEdit = forEdit;
   }
 
-  openModalForEditing(building: Building) {
-    this.titleText = building.title;
-    this.addressText = building.address;
-    this.currentId = building.id;
+  openModalForEditing(subject: Subject) {
+    this.titleText = subject.title;
+    this.currentId = subject.id;
   }
 
-  openModalForDelete(building: Building) {
-    this.selectedTitle = building.title;
-    this.currentId = building.id;
+  openModalForDelete(subject: Subject) {
+    this.selectedTitle = subject.title;
+    this.currentId = subject.id;
   }
 
-  updateBuilding() {
+  updatesubject() {
     if (this.forEdit) {
       const body = {
         title: this.titleText,
-        address: this.addressText,
       };
       console.log(JSON.stringify(body));
       return this.http
         .put(
-          this.rootUrl + '/api/buildings/' + this.currentId,
+          this.rootUrl + '/api/subjects/' + this.currentId,
           JSON.stringify(body),
           this.requestOptions
         )
@@ -76,13 +73,12 @@ export class BuildingsComponent implements OnInit {
           console.log(data);
           if (data.info.statusCode == 200) {
             this.titleText = '';
-            this.addressText = '';
-            this.toastr.success('Building updated!');
+            this.toastr.success('Subject updated!');
             this.http
-              .get(this.rootUrl + '/api/buildings', this.requestOptions)
+              .get(this.rootUrl + '/api/subjects', this.requestOptions)
               .subscribe((data: ResponseAPI) => {
                 console.log(data);
-                this.buildings = data.result;
+                this.subjects = data.result;
               });
             this.closebutton.nativeElement.click();
           } else {
@@ -90,12 +86,12 @@ export class BuildingsComponent implements OnInit {
           }
         });
     } else {
-      if (this.titleText && this.addressText) {
-        const body = { title: this.titleText, address: this.addressText };
+      if (this.titleText) {
+        const body = { title: this.titleText };
         console.log(JSON.stringify(body));
         return this.http
           .post(
-            this.rootUrl + '/api/buildings',
+            this.rootUrl + '/api/subjects',
             JSON.stringify(body),
             this.requestOptions
           )
@@ -103,13 +99,12 @@ export class BuildingsComponent implements OnInit {
             console.log(data);
             if (data.info.statusCode == 200) {
               this.titleText = '';
-              this.addressText = '';
-              this.toastr.success('Building created!');
+              this.toastr.success('Subjet created!');
               this.http
-                .get(this.rootUrl + '/api/buildings', this.requestOptions)
+                .get(this.rootUrl + '/api/subjects', this.requestOptions)
                 .subscribe((data: ResponseAPI) => {
                   console.log(data);
-                  this.buildings = data.result;
+                  this.subjects = data.result;
                 });
               this.closebutton.nativeElement.click();
             } else {
@@ -122,21 +117,21 @@ export class BuildingsComponent implements OnInit {
     }
   }
 
-  deleteBuilding(id: string) {
+  deletesubject(id: string) {
     return this.http
       .delete(
-        this.rootUrl + '/api/buildings/' + this.currentId,
+        this.rootUrl + '/api/subjects/' + this.currentId,
         this.requestOptions
       )
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {
-          this.toastr.success('Building deleted!');
+          this.toastr.success('Subject deleted!');
           this.http
-            .get(this.rootUrl + '/api/buildings', this.requestOptions)
+            .get(this.rootUrl + '/api/subjects', this.requestOptions)
             .subscribe((data: ResponseAPI) => {
               console.log(data);
-              this.buildings = data.result;
+              this.subjects = data.result;
             });
           this.closebuttonDelete.nativeElement.click();
         } else {
