@@ -139,10 +139,7 @@ export class AudienceComponent implements OnInit {
 
   deleteAudience(id: string) {
     return this.http
-      .delete(
-        this.rootUrl + '/api/audiences/' + this.currentId,
-        this.requestOptions
-      )
+      .delete(this.rootUrl + '/api/audiences/' + id, this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {

@@ -2,14 +2,15 @@
     <div class="row">
         <div class="col-12">
             <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalUpdate"
-                (click)="openModal(false);">Создать новый</button>
+                (click)="openModal(false);">Создать нового</button>
             <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalUpdateTitle">
-                                {{forEdit ? 'Редактировать выбранный предмет' : 'Создать новый предмет'}}</h5>
+                                {{forEdit ? 'Редактировать выбранного преподавателя' : 'Создать нового преподавателя'}}
+                            </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
                                 (click)="this.createForm.reset();">
                                 <span aria-hidden="true">&times;</span>
@@ -18,13 +19,34 @@
                         <div class="modal-body">
                             <form #createForm="ngForm">
                                 <div class="form-group">
-                                    <label for="buildingTitleInput">Название предмета</label>
-                                    <input type="text" [(ngModel)]="titleText" class="form-control" name="title"
-                                        id="subjectTitleInput" placeholder="Enter subject title" #title="ngModel"
+                                    <label for="teacherSurnameInput">Фамилия</label>
+                                    <input type="text" [(ngModel)]="surnameText" class="form-control" name="surname"
+                                        id="teacherSurnameInput" placeholder="Enter teacher surname" #surname="ngModel"
                                         required>
-                                    <div *ngIf="title.errors && (title.dirty || title.touched)">
-                                        <div [hidden]="!title.errors.required">
-                                            <p class="m-1" style="color:brown">Поле название - обязательное!</p>
+                                    <div *ngIf="surname.errors && (surname.dirty || surname.touched)">
+                                        <div [hidden]="!surname.errors.required">
+                                            <p class="m-1" style="color:brown">Поле фамилия - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacherNameInput">Имя</label>
+                                    <input type="text" [(ngModel)]="nameText" class="form-control" name="name"
+                                        id="teacherNameInput" placeholder="Enter teacher name" #name="ngModel" required>
+                                    <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                        <div [hidden]="!name.errors.required">
+                                            <p class="m-1" style="color:brown">Поле имя - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="teacherPatronymicInput">Отчество</label>
+                                    <input type="text" [(ngModel)]="patronymicText" class="form-control"
+                                        name="patronymic" id="teacherPatronymicInput"
+                                        placeholder="Enter teacher patronymic" #patronymic="ngModel" required>
+                                    <div *ngIf="patronymic.errors && (patronymic.dirty || patronymic.touched)">
+                                        <div [hidden]="!patronymic.errors.required">
+                                            <p class="m-1" style="color:brown">Поле отчество - обязательное!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +56,7 @@
                                     <button type="button" class="btn btn-primary" data-dismiss="modal"
                                         [disabled]="createForm.form.invalid"
                                         (click)="
-                                        updateSubject(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                        updateTeacher(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
                                 </div>
                             </form>
                         </div>
@@ -43,29 +65,31 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Название предмета</h5>
+                    <h5>ФИО</h5>
                 </div>
                 <div class="col-md-6">
                     <h5>Действия</h5>
                 </div>
             </div>
             <hr>
-            <div *ngFor="let subject of subjects; let i = index">
+            <div *ngFor="let teacher of teachers; let i = index">
                 <div class="row">
                     <div class="col-md-6 content">
-                        {{subject.title}}
+                        {{teacher.surname}}
+                        {{teacher.name}}
+                        {{teacher.patronymic}}
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
-                            (click)="openModal(true); openModalForEditing(subject)">Редактировать</button>
+                            (click)="openModal(true); openModalForEditing(teacher)">Редактировать</button>
                         <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
-                            (click)="openModalForDelete(subject)">Удалить</button>
+                            (click)="openModalForDelete(teacher)">Удалить</button>
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
                             aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранный предмет?
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранного учителя?
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                             #closebuttonDelete>
@@ -73,13 +97,14 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Вы уверены что хотите удалить {{selectedTitle}}?
+                                        Вы уверены что хотите удалить "{{selectedSurname}} {{selectedName}}
+                                        {{selectedPatronymic}}"?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Нет</button>
                                         <button type="button" class="btn btn-danger"
-                                            (click)="deleteSubject(subject.id)">Да</button>
+                                            (click)="deleteTeacher(teacher.id)">Да</button>
                                     </div>
                                 </div>
                             </div>

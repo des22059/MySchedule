@@ -119,10 +119,7 @@ export class FacultyComponent implements OnInit {
 
   deleteFaculty(id: string) {
     return this.http
-      .delete(
-        this.rootUrl + '/api/faculties/' + this.currentId,
-        this.requestOptions
-      )
+      .delete(this.rootUrl + '/api/faculties/' + id, this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {

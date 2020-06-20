@@ -27,6 +27,7 @@ import { BuildingsComponent } from './for-admin/buildings/buildings.component';
 import { AudienceComponent } from './for-admin/audience/audience.component';
 import { SubjectsComponent } from './for-admin/subjects/subjects.component';
 import { FacultyComponent } from './for-admin/faculty/faculty.component';
+import { TeachersComponent } from './for-admin/teachers/teachers.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -54,6 +55,10 @@ const appRouts: Routes = [
         path: 'faculties',
         component: FacultyComponent,
       },
+      {
+        path: 'teachers',
+        component: TeachersComponent,
+      },
     ],
   },
   { path: 'login', component: SignUpComponent },
@@ -80,6 +85,7 @@ const appRouts: Routes = [
     AudienceComponent,
     SubjectsComponent,
     FacultyComponent,
+    TeachersComponent,
   ],
   imports: [
     BrowserModule,

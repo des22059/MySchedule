@@ -57,7 +57,7 @@ export class SubjectsComponent implements OnInit {
     this.currentId = subject.id;
   }
 
-  updatesubject() {
+  updateSubject() {
     if (this.forEdit) {
       const body = {
         title: this.titleText,
@@ -117,12 +117,9 @@ export class SubjectsComponent implements OnInit {
     }
   }
 
-  deletesubject(id: string) {
+  deleteSubject(id: string) {
     return this.http
-      .delete(
-        this.rootUrl + '/api/subjects/' + this.currentId,
-        this.requestOptions
-      )
+      .delete(this.rootUrl + '/api/subjects/' + id, this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {
