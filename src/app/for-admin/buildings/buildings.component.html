@@ -46,6 +46,8 @@
                                         [disabled]="createForm.form.invalid"
                                         (click)="
                                         updateBuilding(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                    <p class="m-1 text-right" style="color:brown" [hidden]="!createForm.form.invalid">
+                                        Заполните все поля для продолжения</p>
                                 </div>
                             </form>
                         </div>

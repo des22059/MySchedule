@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
+import { ColorPickerModule } from '@syncfusion/ej2-angular-inputs';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +29,7 @@ import { AudienceComponent } from './for-admin/audience/audience.component';
 import { SubjectsComponent } from './for-admin/subjects/subjects.component';
 import { FacultyComponent } from './for-admin/faculty/faculty.component';
 import { TeachersComponent } from './for-admin/teachers/teachers.component';
+import { LessonTypesComponent } from './for-admin/lesson-types/lesson-types.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -59,6 +61,10 @@ const appRouts: Routes = [
         path: 'teachers',
         component: TeachersComponent,
       },
+      {
+        path: 'lesson-types',
+        component: LessonTypesComponent,
+      },
     ],
   },
   { path: 'login', component: SignUpComponent },
@@ -86,6 +92,7 @@ const appRouts: Routes = [
     SubjectsComponent,
     FacultyComponent,
     TeachersComponent,
+    LessonTypesComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,6 +101,7 @@ const appRouts: Routes = [
     HttpClientModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    ColorPickerModule,
   ],
   providers: [UserService],
   bootstrap: [AppComponent],

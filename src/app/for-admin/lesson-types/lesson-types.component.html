@@ -9,7 +9,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modalUpdateTitle">
-                                {{forEdit ? 'Редактировать выбранную' : 'Создать новую аудиторию'}}</h5>
+                                {{forEdit ? 'Редактировать выбранный тип занятия' : 'Создать новый тип занятия'}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
                                 (click)="this.createForm.reset();">
                                 <span aria-hidden="true">&times;</span>
@@ -18,33 +18,19 @@
                         <div class="modal-body">
                             <form #createForm="ngForm">
                                 <div class="form-group">
-                                    <label for="buildingTitleInput">Номер аудитории</label>
-                                    <input type="text" [(ngModel)]="audienceNumberText" class="form-control"
-                                        name="audNumber" id="buildingTitleInput" placeholder="Enter building title"
-                                        #audNumber="ngModel" maxlength="5" required>
-                                    <div *ngIf="audNumber.errors && (audNumber.dirty || audNumber.touched)">
-                                        <div [hidden]="!audNumber.errors.required">
+                                    <label for="lessonTypeInput">Название типа занятия</label>
+                                    <input type="text" [(ngModel)]="typeText" class="form-control" name="type"
+                                        id="lessonTypeInput" placeholder="Enter subject title" #type="ngModel" required>
+                                    <div *ngIf="type.errors && (type.dirty || type.touched)">
+                                        <div [hidden]="!type.errors.required">
                                             <p class="m-1" style="color:brown">Поле название - обязательное!</p>
-                                        </div>
-                                        <div [hidden]="!audNumber.errors.maxlength">
-                                            <p class="m-1" style="color:brown">Длина не более 5 символов!</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleFormControlSelect1">Выберите корпус для аудитории</label>
-                                    <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="building"
-                                        (change)="log()" name="selector" #buildingSelect="ngModel" required>
-                                        <option *ngFor="let building of buildings; let i = index" [value]="building.id">
-                                            {{building.title}}
-                                        </option>
-                                    </select>
-                                    <div
-                                        *ngIf="buildingSelect.errors && (buildingSelect.dirty || buildingSelect.touched)">
-                                        <div [hidden]="!buildingSelect.errors.required">
-                                            <p class="m-1" style="color:brown">Нужно выбрать корпус!</p>
-                                        </div>
-                                    </div>
+                                    <label for="colorpicker">Цвет типа занятия:</label>
+                                    <input ejs-colorpicker type="color" class="form-control ml-3" id="colorpicker"
+                                        required [(value)]="colorText" name="colorpicker" />
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
@@ -52,7 +38,7 @@
                                     <button type="button" class="btn btn-primary" data-dismiss="modal"
                                         [disabled]="createForm.form.invalid"
                                         (click)="
-                                        updateAudience(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                        updateLessonType(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
                                     <p class="m-1 text-right" style="color:brown" [hidden]="!createForm.form.invalid">
                                         Заполните все поля для продолжения</p>
                                 </div>
@@ -63,35 +49,36 @@
             </div>
             <div class="row">
                 <div class="col-md-3">
-                    <h5>Название аудитории</h5>
+                    <h5>Название типа занятия</h5>
                 </div>
                 <div class="col-md-3">
-                    <h5>Корпус</h5>
+                    <h5>Цвет</h5>
                 </div>
                 <div class="col-md-6">
                     <h5>Действия</h5>
                 </div>
             </div>
             <hr>
-            <div *ngFor="let aud of audience; let i = index">
+            <div *ngFor="let type of lessonTypes; let i = index">
                 <div class="row">
                     <div class="col-md-3 content">
-                        {{aud.audienceNumber}}
+                        {{type.type}}
                     </div>
-                    <div class="col-md-3 content">
-                        {{aud.building.title}}
+                    <div class="col-md-3 content p-1 pr-5">
+                        <div class="w-100 h-100 d-inline-block" [style.background-color]="type.color"></div>
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
-                            (click)="openModal(true); openModalForEditing(aud)">Редактировать</button>
+                            (click)="openModal(true); openModalForEditing(type)">Редактировать</button>
                         <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
-                            (click)="opemModalForDelete(aud)">Удалить</button>
+                            (click)="openModalForDelete(type)">Удалить</button>
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
                             aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранную аудиторию
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранный тип
+                                            занятия?
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                             #closebuttonDelete>
@@ -99,13 +86,13 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        Вы уверены что хотите удалить {{audienceNumberText}}?
+                                        Вы уверены что хотите удалить {{selectedType}}?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Нет</button>
                                         <button type="button" class="btn btn-danger"
-                                            (click)="deleteAudience(aud.id)">Да</button>
+                                            (click)="deleteLessonType(type.id)">Да</button>
                                     </div>
                                 </div>
                             </div>

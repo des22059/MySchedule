@@ -19,6 +19,7 @@ interface WeekLine {
 })
 export class ScheduleComponent implements OnInit {
   constructor(public dateService: DateService) {}
+  isAdmin = true;
   lessons = LESSONS;
   weekNames: string[] = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
   lessonsTime: string[] = [
@@ -34,6 +35,10 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.dateService.date.subscribe(this.generate.bind(this));
+  }
+
+  log() {
+    console.log('Hover!');
   }
 
   generate(now: moment.Moment) {

@@ -7,7 +7,7 @@
 .table {
   height: 100%;
   width: 100%;
-  background-color: #ffe9c5;
+  background-color: #7c9ddb;
   padding: 4px;
 }
 
@@ -20,7 +20,7 @@
 #time div {
   display: flex;
   flex: 1;
-  color: red;
+  color: rgb(255, 255, 255);
   font-size: 14px;
   text-align: center;
   justify-content: center;
@@ -58,10 +58,11 @@
   vertical-align: middle;
   text-align: center;
   margin: 0 auto;
-  color: red;
+  color: rgb(255, 255, 255);
 }
 
 .cell {
+  min-height: 50px;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -80,10 +81,25 @@
   flex: 1;
   width: 124px;
   flex-direction: column;
-  background-color: #fa9191;
+  background-color: #ffffff;
   justify-content: center;
   height: 100%;
   margin-bottom: 2px;
+}
+
+.new-lesson {
+  background-color: white;
+  color: #ffe9c5;
+  i {
+    opacity: 0;
+  }
+}
+
+.new-lesson:hover {
+  background-color: #a3bbe7;
+  i {
+    opacity: 1;
+  }
 }
 
 .inner-lesson {

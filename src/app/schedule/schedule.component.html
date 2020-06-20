@@ -8,9 +8,11 @@
         <div class="week-line" *ngFor="let weekLine of schedule; let lineIndex = index">
             <div class="week-name"><label>{{weekNames[lineIndex]}}</label></div>
             <div class="cell" *ngFor="let cell of weekLine.weekLines; let cellIndex=index">
-                <div class="lesson" *ngFor="let lesson of cell.cells; let lessonIndex = index">
+                <div class="lesson" *ngFor=" let lesson of cell.cells; let lessonIndex=index">
                     <app-lesson class="inner-lesson" [lesson]="lesson"></app-lesson>
                 </div>
+                <div *ngIf="isAdmin" class="lesson text-center new-lesson"><i
+                        class="material-icons">add_circle_outline</i></div>
             </div>
         </div>
     </div>
