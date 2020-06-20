@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalUpdate"
+                (click)="openModal(false);">Создать новый</button>
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUpdateTitle">
+                                {{forEdit ? 'Редактировать выбранный факультет' : 'Создать новый факультет'}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
+                                (click)="this.createForm.reset();">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #createForm="ngForm">
+                                <div class="form-group">
+                                    <label for="buildingTitleInput">Название факультета</label>
+                                    <input type="text" [(ngModel)]="titleText" class="form-control" name="title"
+                                        id="facultyTitleInput" placeholder="Enter faculty title" #title="ngModel"
+                                        required>
+                                    <div *ngIf="title.errors && (title.dirty || title.touched)">
+                                        <div [hidden]="!title.errors.required">
+                                            <p class="m-1" style="color:brown">Поле название - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        (click)="createForm.reset();">Закрыть</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        [disabled]="createForm.form.invalid"
+                                        (click)="
+                                        updateFaculty(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Название факультета</h5>
+                </div>
+                <div class="col-md-6">
+                    <h5>Действия</h5>
+                </div>
+            </div>
+            <hr>
+            <div *ngFor="let faculty of faculties; let i = index">
+                <div class="row">
+                    <div class="col-md-3 content">
+                        {{faculty.title}}
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
+                            (click)="openModal(true); openModalForEditing(faculty)">Редактировать</button>
+                        <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
+                            (click)="openModalForDelete(faculty)">Удалить</button>
+                        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+                            aria-labelledby="modalDelete" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранный факультет?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            #closebuttonDelete>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Вы уверены что хотите удалить {{selectedTitle}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Нет</button>
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="deleteFaculty(faculty.id)">Да</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
