@@ -1,0 +1,115 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mb-3 mb-3 mt-3 mt-sm-0" data-toggle="modal" data-target="#modalUpdate"
+                (click)="openModal(false);">Создать</button>
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUpdateTitle">
+                                {{forEdit ? 'Редактировать связи' : 'Создать новые связи'}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
+                                (click)="this.createForm.reset();">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #createForm="ngForm">
+                                <div class="form-group">
+                                    <label for="teacherSelect">Выберите преподавателя</label>
+                                    <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
+                                        name="teacherSelector" #teacherSelect="ngModel" required>
+                                        <option *ngFor="let teacher of teachers; let i = index" [value]="teacher.id">
+                                            {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="teacherSelect.errors && (teacherSelect.dirty || teacherSelect.touched)">
+                                        <div [hidden]="!teacherSelect.errors.required">
+                                            <p class="m-1" style="color:brown">Нужно выбрать преподавателя!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Выберите дисциплины преподавателя</label>
+                                    <ng-select bindLabel="name" placeholder="Select item" appendTo="body"
+                                        multiple="true" [searchable]="true" [clearable]="true" [closeOnSelect]="false"
+                                        [(ngModel)]="selected" [searchable]=true name="selector">
+                                        <ng-option [value]="item.id" [disabled]="item.disabled"
+                                            *ngFor="let item of items">
+                                            {{item.title}}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        (click)="createForm.reset();">Закрыть</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        [disabled]="createForm.form.invalid" (click)="
+                                        updateTS(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                    <p class="m-1 text-right" style="color:brown" [hidden]="!createForm.form.invalid">
+                                        Заполните все поля для продолжения</p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none d-sm-flex">
+                <div class="col-md-3">
+                    <h5>ФИО преподавателя</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Дисциплины</h5>
+                </div>
+                <div class="col-md-6">
+                    <h5>Действия</h5>
+                </div>
+            </div>
+            <hr>
+            <div *ngFor="let teacher of teachers; let i = index">
+                <div class="row">
+                    <div class="col-md-3 content">
+                        {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
+                    </div>
+                    <div class="col-md-3 content">
+                        <div *ngFor="let subject of subjects; let i = index">
+                            {{subject.title}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
+                            (click)="openModal(true); openModalForEditing(teacher)">Редактировать</button>
+                        <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
+                            (click)="openModalForDelete(teacher)">Удалить</button>
+                        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+                            aria-labelledby="modalDelete" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранную аудиторию
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            #closebuttonDelete>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Вы уверены что хотите удалить?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Нет</button>
+                                        <button type="button" class="btn btn-danger" (click)="deleteTS()">Да</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

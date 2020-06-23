@@ -28,7 +28,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                [showButtons]="false" />`
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                         (click)="createForm.reset();">Закрыть</button>
@@ -60,7 +59,7 @@
                         <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
                             (click)="openModal(true); openModalForEditing(subject)">Редактировать</button>
                         <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
-                            (click)="openModalForDelete(subject)">Удалить</button>
+                            (click)="openModalForDelete(subject);">Удалить</button>
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
                             aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -80,7 +79,7 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Нет</button>
                                         <button type="button" class="btn btn-danger"
-                                            (click)="deleteSubject(subject.id)">Да</button>
+                                            (click)="deleteSubject();">Да</button>
                                     </div>
                                 </div>
                             </div>

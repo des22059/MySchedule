@@ -43,6 +43,10 @@ export class SubjectsComponent implements OnInit {
       });
   }
 
+  log() {
+    console.log(this.currentId);
+  }
+
   openModal(forEdit: boolean) {
     this.forEdit = forEdit;
   }
@@ -117,9 +121,12 @@ export class SubjectsComponent implements OnInit {
     }
   }
 
-  deleteSubject(id: string) {
+  deleteSubject() {
     return this.http
-      .delete(this.rootUrl + '/api/subjects/' + id, this.requestOptions)
+      .delete(
+        this.rootUrl + '/api/subjects/' + this.currentId,
+        this.requestOptions
+      )
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {

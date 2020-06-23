@@ -30,6 +30,8 @@ import { SubjectsComponent } from './for-admin/subjects/subjects.component';
 import { FacultyComponent } from './for-admin/faculty/faculty.component';
 import { TeachersComponent } from './for-admin/teachers/teachers.component';
 import { LessonTypesComponent } from './for-admin/lesson-types/lesson-types.component';
+import { TeacherSubjectComponent } from './for-admin/teacher-subject/teacher-subject.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -65,6 +67,10 @@ const appRouts: Routes = [
         path: 'lesson-types',
         component: LessonTypesComponent,
       },
+      {
+        path: 'teacher-subjects',
+        component: TeacherSubjectComponent,
+      },
     ],
   },
   { path: 'login', component: SignUpComponent },
@@ -93,6 +99,7 @@ const appRouts: Routes = [
     FacultyComponent,
     TeachersComponent,
     LessonTypesComponent,
+    TeacherSubjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +109,7 @@ const appRouts: Routes = [
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     ColorPickerModule,
+    NgSelectModule,
   ],
   providers: [UserService],
   bootstrap: [AppComponent],
