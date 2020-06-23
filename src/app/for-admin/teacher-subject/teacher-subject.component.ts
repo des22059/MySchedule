@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ResponseAPI } from '../../shared/responseAPI';
 import { ToastrService } from 'ngx-toastr';
 import { Teacher } from '../teachers/teacher.model';
-import { Subject } from '../subjects/subject.model';
+import { Subject1 } from '../subjects/subject.model';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { Subj } from './ISubject.model';
+import { Subj } from './teacher-subject.model';
 
 @Component({
   selector: 'app-teacher-subject',
@@ -18,11 +18,13 @@ export class TeacherSubjectComponent implements OnInit {
   requestOptions: {};
 
   subjects: {};
-
   teachers: {};
-  selectedTeacher: Teacher;
 
-  disciplines = {};
+  teachersA = [];
+  teacher: Teacher;
+  selectedTeacher: string;
+
+  disciplines = [];
 
   items = [];
   selected = [];
@@ -54,28 +56,57 @@ export class TeacherSubjectComponent implements OnInit {
     this.http
       .get(this.rootUrl + '/api/teachers', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
-        console.log(data);
         this.teachers = data.result;
+        for (let key in this.teachers) {
+          if (this.teachers.hasOwnProperty(key)) {
+            this.teachersA.push(this.teachers[key]);
+          }
+        }
+        console.log(this.teachersA.length);
+        this.teachersA.forEach((x) => {
+          console.log(x.id);
+          this.http
+            .get(
+              this.rootUrl + '/api/subjects?teacher=' + x.id,
+              this.requestOptions
+            )
+            .subscribe((data: ResponseAPI) => {
+              this.disciplines.push({ teacher: x, subjects: data.result });
+              console.log(this.disciplines[0].subjects);
+            });
+        });
       });
     this.http
       .get(this.rootUrl + '/api/subjects', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
-        console.log(data);
         this.subjects = data.result;
         for (let key in this.subjects) {
           if (this.subjects.hasOwnProperty(key)) {
             this.items.push(this.subjects[key]);
           }
         }
-        //this.selected = [this.items[0].id, this.items[1].id];
-        //console.log(this.selected);
       });
+  }
+
+  ChangeTeacher() {
     this.http
-      .get(this.rootUrl + '/api/disciplines', this.requestOptions)
+      .get(
+        this.rootUrl + '/api/subjects?teacher=' + this.selectedTeacher,
+        this.requestOptions
+      )
       .subscribe((data: ResponseAPI) => {
-        console.log(data);
-        this.disciplines = data.result;
-        console.log(this.disciplines);
+        this.subjects = data.result;
+        let temp = [];
+        for (let key in this.subjects) {
+          if (this.subjects.hasOwnProperty(key)) {
+            temp.push(this.subjects[key]);
+          }
+        }
+        this.selected = [];
+        temp.forEach((x) => {
+          console.log(x.id);
+          this.selected.push(x.id);
+        });
       });
   }
 
@@ -90,11 +121,13 @@ export class TeacherSubjectComponent implements OnInit {
     this.forEdit = forEdit;
   }
 
-  openModalForEditing(teacher: Teacher) {
-    this.surnameText = teacher.surname;
-    this.nameText = teacher.name;
-    this.patronymicText = teacher.patronymic;
-    this.currentId = teacher.id;
+  openModalForEditing(discipline: Subj) {
+    this.selectedTeacher = discipline.teacher.id;
+    this.currentId = discipline.teacher.id;
+    this.selected = [];
+    discipline.subjects.forEach((x) => {
+      this.selected.push(x.id);
+    });
   }
 
   openModalForDelete(teacher: Teacher) {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ResponseAPI } from '../../shared/responseAPI';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from '../subjects/subject.model';
+import { Subject1 } from '../subjects/subject.model';
 
 @Component({
   selector: 'app-subjects',
@@ -51,12 +51,12 @@ export class SubjectsComponent implements OnInit {
     this.forEdit = forEdit;
   }
 
-  openModalForEditing(subject: Subject) {
+  openModalForEditing(subject: Subject1) {
     this.titleText = subject.title;
     this.currentId = subject.id;
   }
 
-  openModalForDelete(subject: Subject) {
+  openModalForDelete(subject: Subject1) {
     this.selectedTitle = subject.title;
     this.currentId = subject.id;
   }

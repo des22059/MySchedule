@@ -20,7 +20,8 @@
                                 <div class="form-group">
                                     <label for="teacherSelect">Выберите преподавателя</label>
                                     <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
-                                        name="teacherSelector" #teacherSelect="ngModel" required>
+                                        name="teacherSelector" #teacherSelect="ngModel" (change)="ChangeTeacher(); "
+                                        required>
                                         <option *ngFor="let teacher of teachers; let i = index" [value]="teacher.id">
                                             {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
                                         </option>
@@ -68,21 +69,21 @@
                 </div>
             </div>
             <hr>
-            <div *ngFor="let teacher of teachers; let i = index">
+            <div *ngFor="let discipline of disciplines; let i = index">
                 <div class="row">
                     <div class="col-md-3 content">
-                        {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
+                        {{discipline.teacher.surname}} {{discipline.teacher.name}} {{discipline.teacher.patronymic}}
                     </div>
                     <div class="col-md-3 content">
-                        <div *ngFor="let subject of subjects; let i = index">
+                        <div *ngFor="let subject of discipline.subjects; let i = index">
                             {{subject.title}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
-                            (click)="openModal(true); openModalForEditing(teacher)">Редактировать</button>
+                            (click)="openModal(true); openModalForEditing(discipline)">Редактировать</button>
                         <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
-                            (click)="openModalForDelete(teacher)">Удалить</button>
+                            (click)="openModalForDelete(discipline)">Удалить</button>
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
                             aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
