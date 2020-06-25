@@ -19,23 +19,17 @@ export class TeacherSubjectComponent implements OnInit {
 
   subjects: {};
   teachers: {};
-
   teachersA = [];
+
   teacher: Teacher;
   selectedTeacher: string;
+  teachersNoSubjects = [];
 
   disciplines = [];
-
   items = [];
   selected = [];
 
-  surnameText: string;
-  nameText: string;
-  patronymicText: string;
   currentId: string;
-  selectedSurname: string;
-  selectedName: string;
-  selectedPatronymic: string;
   forEdit = false;
 
   @ViewChild('closebutton') closebutton;
@@ -52,19 +46,22 @@ export class TeacherSubjectComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  dataInit() {
     this.http
       .get(this.rootUrl + '/api/teachers', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         this.teachers = data.result;
+        this.teachersA = [];
         for (let key in this.teachers) {
           if (this.teachers.hasOwnProperty(key)) {
             this.teachersA.push(this.teachers[key]);
           }
         }
         console.log(this.teachersA.length);
+        this.teachersNoSubjects = [];
         this.teachersA.forEach((x) => {
           console.log(x.id);
+          this.disciplines = [];
           this.http
             .get(
               this.rootUrl + '/api/subjects?teacher=' + x.id,
@@ -72,7 +69,16 @@ export class TeacherSubjectComponent implements OnInit {
             )
             .subscribe((data: ResponseAPI) => {
               this.disciplines.push({ teacher: x, subjects: data.result });
-              console.log(this.disciplines[0].subjects);
+              let temp = [];
+              temp = Object.keys(data.result).map(function (i) {
+                let item = data.result[i];
+                return item;
+              });
+              if (temp.length == 0) {
+                this.teachersNoSubjects.push(x);
+              }
+              console.log('!!!');
+              console.log(data.result);
             });
         });
       });
@@ -80,12 +86,17 @@ export class TeacherSubjectComponent implements OnInit {
       .get(this.rootUrl + '/api/subjects', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
         this.subjects = data.result;
+        this.items = [];
         for (let key in this.subjects) {
           if (this.subjects.hasOwnProperty(key)) {
             this.items.push(this.subjects[key]);
           }
         }
       });
+  }
+
+  ngOnInit(): void {
+    this.dataInit();
   }
 
   ChangeTeacher() {
@@ -131,99 +142,72 @@ export class TeacherSubjectComponent implements OnInit {
   }
 
   openModalForDelete(teacher: Teacher) {
-    this.selectedSurname = teacher.surname;
-    this.selectedName = teacher.name;
-    this.selectedPatronymic = teacher.patronymic;
     this.currentId = teacher.id;
   }
 
   updateTS() {
     if (this.forEdit) {
       const body = {
-        surname: this.surnameText,
-        name: this.nameText,
-        patronymic: this.patronymicText,
+        teacher: this.currentId,
+        subjects: this.selected,
       };
       console.log(JSON.stringify(body));
       return this.http
         .put(
-          this.rootUrl + '/api/teachers/' + this.currentId,
+          this.rootUrl + '/api/disciplines',
           JSON.stringify(body),
           this.requestOptions
         )
         .subscribe((data: ResponseAPI) => {
           console.log(data);
           if (data.info.statusCode == 200) {
-            this.surnameText = '';
-            this.nameText = '';
-            this.patronymicText = '';
-            this.toastr.success('Teacher updated!');
-            this.http
-              .get(this.rootUrl + '/api/teachers', this.requestOptions)
-              .subscribe((data: ResponseAPI) => {
-                console.log(data);
-                this.teachers = data.result;
-              });
+            this.toastr.success('Disciplines updated!');
+            this.dataInit();
             this.closebutton.nativeElement.click();
           } else {
             this.toastr.error('Error: ' + data.info.statusCode.toString());
           }
         });
     } else {
-      if (this.surnameText && this.nameText && this.patronymicText) {
-        const body = {
-          surname: this.surnameText,
-          name: this.nameText,
-          patronymic: this.patronymicText,
-        };
-        console.log(JSON.stringify(body));
-        return this.http
-          .post(
-            this.rootUrl + '/api/teachers',
-            JSON.stringify(body),
-            this.requestOptions
-          )
-          .subscribe((data: ResponseAPI) => {
-            console.log(data);
-            if (data.info.statusCode == 200) {
-              this.surnameText = '';
-              this.nameText = '';
-              this.patronymicText = '';
-              this.toastr.success('Teacher created!');
-              this.http
-                .get(this.rootUrl + '/api/teachers', this.requestOptions)
-                .subscribe((data: ResponseAPI) => {
-                  console.log(data);
-                  this.teachers = data.result;
-                });
-              this.closebutton.nativeElement.click();
-            } else {
-              this.toastr.error('Error: ' + data.info.statusCode.toString());
-            }
-          });
-      } else {
-        this.toastr.error('Error: ' + 'please enter value properly');
-      }
+      const body = {
+        teacher: this.selectedTeacher,
+        subjects: this.selected,
+      };
+      console.log(JSON.stringify(body));
+      return this.http
+        .post(
+          this.rootUrl + '/api/disciplines',
+          JSON.stringify(body),
+          this.requestOptions
+        )
+        .subscribe((data: ResponseAPI) => {
+          console.log(data);
+          if (data.info.statusCode == 200) {
+            this.toastr.success('Disciplines created!');
+            this.dataInit();
+            this.closebutton.nativeElement.click();
+          } else {
+            this.toastr.error('Error: ' + data.info.statusCode.toString());
+          }
+        });
     }
   }
 
   deleteTS() {
     return this.http
-      .delete(this.rootUrl + '/api/teachers/', this.requestOptions)
+      .delete(
+        this.rootUrl + '/api/disciplines/' + this.currentId,
+        this.requestOptions
+      )
       .subscribe((data: ResponseAPI) => {
         console.log(data);
         if (data.info.statusCode == 200) {
-          this.toastr.success('Teacher deleted!');
-          this.http
-            .get(this.rootUrl + '/api/teachers', this.requestOptions)
-            .subscribe((data: ResponseAPI) => {
-              console.log(data);
-              this.teachers = data.result;
-            });
+          this.toastr.success('All disciplines deleted!');
           this.closebuttonDelete.nativeElement.click();
         } else {
           this.toastr.error('Error: ' + data.info.statusCode.toString());
         }
+        this.dataInit();
       });
   }
 }

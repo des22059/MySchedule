@@ -2,7 +2,9 @@
     <div class="row">
         <div class="col-12">
             <button class="btn btn-primary mb-3 mb-3 mt-3 mt-sm-0" data-toggle="modal" data-target="#modalUpdate"
-                (click)="openModal(false);">Создать</button>
+                (click)="openModal(false);" [disabled]="teachersNoSubjects.length == 0 ? true : false">Создать</button>
+            <p *ngIf="teachersNoSubjects.length == 0 " class="" style="color:brown">Нет незанятых
+                преподавателей</p>
             <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
@@ -19,29 +21,57 @@
                             <form #createForm="ngForm">
                                 <div class="form-group">
                                     <label for="teacherSelect">Выберите преподавателя</label>
-                                    <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
-                                        name="teacherSelector" #teacherSelect="ngModel" (change)="ChangeTeacher(); "
-                                        required>
-                                        <option *ngFor="let teacher of teachers; let i = index" [value]="teacher.id">
-                                            {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
-                                        </option>
-                                    </select>
-                                    <div *ngIf="teacherSelect.errors && (teacherSelect.dirty || teacherSelect.touched)">
-                                        <div [hidden]="!teacherSelect.errors.required">
-                                            <p class="m-1" style="color:brown">Нужно выбрать преподавателя!</p>
+                                    <div *ngIf="!forEdit; else elseBlock">
+                                        <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
+                                            name="teacherSelector" #teacherSelect="ngModel"
+                                            [disabled]="teachersNoSubjects.length == 0 ? true : false" selected
+                                            (change)="ChangeTeacher();" required>
+                                            <option *ngFor="let teacher of teachersNoSubjects; let i = index"
+                                                [value]="teacher.id">
+                                                {{teacher.surname}} {{teacher.name}} {{teacher.patronymic}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="teacherSelect.errors && (teacherSelect.dirty || teacherSelect.touched)">
+                                            <div [hidden]="!teacherSelect.errors.required">
+                                                <p class="m-1" style="color:brown">Нужно выбрать преподавателя!</p>
+                                            </div>
                                         </div>
                                     </div>
+                                    <ng-template #elseBlock>
+                                        <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
+                                            name="teacherSelector" #teacherSelect="ngModel" selected
+                                            (change)="ChangeTeacher();" required>
+                                            <option *ngFor="let teacher of teachers; let i = index"
+                                                [value]="teacher.id">
+                                                {{teacher.surname}} {{teacher.name}}
+                                                {{teacher.patronymic}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="teacherSelect.errors && (teacherSelect.dirty || teacherSelect.touched)">
+                                            <div [hidden]="!teacherSelect.errors.required">
+                                                <p class="m-1" style="color:brown">Нужно выбрать преподавателя!</p>
+                                            </div>
+                                        </div>
+                                    </ng-template>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Выберите дисциплины преподавателя</label>
                                     <ng-select bindLabel="name" placeholder="Select item" appendTo="body"
                                         multiple="true" [searchable]="true" [clearable]="true" [closeOnSelect]="false"
-                                        [(ngModel)]="selected" [searchable]=true name="selector">
+                                        [(ngModel)]="selected" #subjectSelect="ngModel" name="selector">
                                         <ng-option [value]="item.id" [disabled]="item.disabled"
                                             *ngFor="let item of items">
                                             {{item.title}}
                                         </ng-option>
                                     </ng-select>
+                                    <div *ngIf="subjectSelect.errors && (subjectSelect.dirty || subjectSelect.touched)">
+                                        <div [hidden]="!subjectSelect.errors.required">
+                                            <p class="m-1" style="color:brown">Нужно выбрать как минимум одну
+                                                дисциплину!</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
@@ -70,7 +100,7 @@
             </div>
             <hr>
             <div *ngFor="let discipline of disciplines; let i = index">
-                <div class="row">
+                <div class="row" *ngIf="discipline.subjects.length != 0;">
                     <div class="col-md-3 content">
                         {{discipline.teacher.surname}} {{discipline.teacher.name}} {{discipline.teacher.patronymic}}
                     </div>
@@ -83,7 +113,7 @@
                         <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
                             (click)="openModal(true); openModalForEditing(discipline)">Редактировать</button>
                         <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
-                            (click)="openModalForDelete(discipline)">Удалить</button>
+                            (click)="openModalForDelete(discipline.teacher)">Удалить</button>
                         <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
                             aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
