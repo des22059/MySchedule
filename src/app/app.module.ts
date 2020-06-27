@@ -32,11 +32,8 @@ import { TeachersComponent } from './for-admin/teachers/teachers.component';
 import { LessonTypesComponent } from './for-admin/lesson-types/lesson-types.component';
 import { TeacherSubjectComponent } from './for-admin/teacher-subject/teacher-subject.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-<<<<<<< HEAD
 import { GroupComponent } from './for-admin/group/group.component';
-=======
 import { UsersComponent } from './for-admin/users/users.component';
->>>>>>> Feature#5141
 
 registerLocaleData(localeRu, 'ru');
 
@@ -77,13 +74,12 @@ const appRouts: Routes = [
         component: TeacherSubjectComponent,
       },
       {
-<<<<<<< HEAD
         path: 'groups',
         component: GroupComponent,
-=======
+      },
+      {
         path: 'users',
         component: UsersComponent,
->>>>>>> Feature#5141
       },
     ],
   },
@@ -114,11 +110,8 @@ const appRouts: Routes = [
     TeachersComponent,
     LessonTypesComponent,
     TeacherSubjectComponent,
-<<<<<<< HEAD
     GroupComponent,
-=======
     UsersComponent,
->>>>>>> Feature#5141
   ],
   imports: [
     BrowserModule,
