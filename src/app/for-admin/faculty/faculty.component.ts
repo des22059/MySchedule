@@ -73,7 +73,7 @@ export class FacultyComponent implements OnInit {
           console.log(data);
           if (data.info.statusCode == 200) {
             this.titleText = '';
-            this.toastr.success('faculty updated!');
+            this.toastr.success('Faculty updated!');
             this.http
               .get(this.rootUrl + '/api/faculties', this.requestOptions)
               .subscribe((data: ResponseAPI) => {

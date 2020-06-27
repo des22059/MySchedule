@@ -12,7 +12,7 @@ export const LESSONS: Lesson[] = [
     day: 0,
   },
   {
-    title: 'Niggashit long name',
+    title: 'Very Very loooong name',
     teacher: { surname: 'Surname2', name: 'Name2', patronymic: 'Patronymic2' },
     position: [1, 3, 3, 3],
     type: 'Practice',

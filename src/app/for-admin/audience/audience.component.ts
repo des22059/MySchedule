@@ -61,7 +61,6 @@ export class AudienceComponent implements OnInit {
   }
 
   openModalForEditing(audience: Audience) {
-    //console.log(audience.building.title);
     this.currentId = audience.id;
     this.audienceNumberText = audience.audienceNumber;
     this.currentBuilding = audience.building;

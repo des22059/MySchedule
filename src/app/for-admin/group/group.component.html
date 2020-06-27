@@ -1,0 +1,133 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mb-3 mt-3 mt-sm-0" data-toggle="modal" data-target="#modalUpdate"
+                (click)="openModal(false);">Создать</button>
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document" #createModal>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUpdateTitle">
+                                {{forEdit ? 'Редактировать группу' : 'Создать новую группу'}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton
+                                (click)="this.createForm.reset();">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #createForm="ngForm">
+                                <div class="form-group">
+                                    <label for="groupInput">Название группы</label>
+                                    <input type="text" [(ngModel)]="selectedGroupTitle" class="form-control"
+                                        name="title" id="groupInput" placeholder="Enter group title"
+                                        #groupTitle="ngModel" required>
+                                    <div *ngIf="groupTitle.errors && (groupTitle.dirty || groupTitle.touched)">
+                                        <div [hidden]="!groupTitle.errors.required">
+                                            <p class="m-1" style="color:brown">Поле название - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="facultySelect">Выбирете факультет</label>
+                                    <select class="form-control" id="facultySelect" [(ngModel)]="selectedFaculty"
+                                        name="facultySelector" #facultySelector="ngModel" selected required>
+                                        <option *ngFor="let faculty of faculties; let i = index" [value]="faculty.id">
+                                            {{faculty.title}}
+                                        </option>
+                                    </select>
+                                    <div
+                                        *ngIf="facultySelector.errors && (facultySelector.dirty || facultySelector.touched)">
+                                        <div [hidden]="!facultySelector.errors.required">
+                                            <p class="m-1" style="color:brown">Выберите факультет!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="groupSelect">Выбирете родительскую группу</label>
+                                    <select class="form-control" id="groupSelect" [(ngModel)]="selectedParentGroup"
+                                        name="parentGroupSelector" #parentGroupSelector="ngModel" selected>
+                                        <option *ngFor="let group of groupsArray; let i = index" [value]="group.id">
+                                            {{group.title}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        (click)="createForm.reset();">Закрыть</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        [disabled]="createForm.form.invalid"
+                                        (click)="
+                                        updateGroup(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                    <p class="m-1 text-right" style="color:brown" [hidden]="!createForm.form.invalid">
+                                        Заполните все поля для продолжения</p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none d-sm-flex">
+                <div class="col-md-3">
+                    <h5>Название группы</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Родительская группа</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Факультет</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Действия</h5>
+                </div>
+            </div>
+            <hr>
+            <div *ngFor="let group of groupsArray; let i = index">
+                <div class="row">
+                    <div class="col-md-3 content">
+                        {{group.title}}
+                    </div>
+                    <div class="col-md-3 content">
+                        <div *ngIf="group.parent">
+                            {{group.parent.title}}
+                        </div>
+                    </div>
+                    <div class="col-md-3 content">
+                        {{group.faculty.title}}
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
+                            (click)="openModal(true); openModalForEditing(group)">Редактировать</button>
+                        <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
+                            (click)="openModalForDelete(group)">Удалить</button>
+                        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+                            aria-labelledby="modalDelete" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранную группу?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            #closebuttonDelete>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Вы уверены что хотите удалить {{group.title}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Нет</button>
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="deleteGroup(); createForm.reset();">Да</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
