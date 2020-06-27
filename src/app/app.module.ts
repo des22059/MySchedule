@@ -32,6 +32,7 @@ import { TeachersComponent } from './for-admin/teachers/teachers.component';
 import { LessonTypesComponent } from './for-admin/lesson-types/lesson-types.component';
 import { TeacherSubjectComponent } from './for-admin/teacher-subject/teacher-subject.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { UsersComponent } from './for-admin/users/users.component';
 
 registerLocaleData(localeRu, 'ru');
 
@@ -71,6 +72,10 @@ const appRouts: Routes = [
         path: 'teacher-subjects',
         component: TeacherSubjectComponent,
       },
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
     ],
   },
   { path: 'login', component: SignUpComponent },
@@ -100,6 +105,7 @@ const appRouts: Routes = [
     TeachersComponent,
     LessonTypesComponent,
     TeacherSubjectComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,

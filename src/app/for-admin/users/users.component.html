@@ -1,0 +1,137 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary mb-3 mb-3 mt-3 mt-sm-0" data-toggle="modal" data-target="#modalUpdate"
+                (click)="createForm.reset(); openModal(false);">Создать</button>
+            <div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="modalUpdateTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document" #createModal>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalUpdateTitle">
+                                {{forEdit ? 'Редактировать выбранного пользователя' : 'Создать нового пользователя'}}
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closebutton>
+                                <span aria-hidden="true" (click)="this.createForm.reset();">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #createForm="ngForm">
+                                <div class="form-group">
+                                    <label for="loginInput">Логин</label>
+                                    <input type="text" [(ngModel)]="loginText" class="form-control" name="login"
+                                        id="loginInput" placeholder="Enter user login" #login="ngModel" required>
+                                    <div *ngIf="login.errors && (login.dirty || login.touched)">
+                                        <div [hidden]="!login.errors.required">
+                                            <p class="m-1" style="color:brown">Поле логин - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="mailInput">Почта</label>
+                                    <input type="text" [(ngModel)]="mailText" class="form-control" name="mail"
+                                        id="mailInput" placeholder="Enter user email" #mail="ngModel" required>
+                                    <div *ngIf="mail.errors && (mail.dirty || mail.touched)">
+                                        <div [hidden]="!mail.errors.required">
+                                            <p class="m-1" style="color:brown">Поле почта - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label for="passInput">Пароль</label>
+                                    <input type="text" [(ngModel)]="passText" class="form-control" name="pass"
+                                        id="passInput" placeholder="Enter user password" #pass="ngModel" required>
+                                    <div *ngIf="pass.errors && (pass.dirty || pass.touched)">
+                                        <div [hidden]="!pass.errors.required">
+                                            <p class="m-1" style="color:brown">Поле пароль - обязательное!</p>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <label>Роль</label>
+                                    <div *ngFor="let role of roles">
+                                        <label>
+                                            <input name="role" type="radio" value="{{ role.id }}"
+                                                [(ngModel)]="selectedRole" checked required />
+                                            <span> {{ role.role }}</span>
+                                        </label>
+                                    </div>
+                                    <div *ngIf="!selectedRole">
+                                        <p class="m-1" style="color:brown">Выберите роль!</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        (click)="createForm.reset();">Закрыть</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                        [disabled]="createForm.form.invalid"
+                                        (click)="
+                                        updateUser(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none d-sm-flex">
+                <div class="col-md-3">
+                    <h5>Логин</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Почта</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Роль</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Действия</h5>
+                </div>
+            </div>
+            <hr>
+            <div *ngFor="let user of users; let i = index">
+                <div class="row">
+                    <div class="col-md-3 content">
+                        {{user.login}}
+                    </div>
+                    <div class="col-md-3 content">
+                        {{user.mail}}
+                    </div>
+                    <div class="col-md-3 content">
+                        {{user.role.role}}
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-link mr-3 p-0" data-toggle="modal" data-target="#modalUpdate"
+                            (click)="openModal(true); openModalForEditing(user)">Редактировать</button>
+                        <button class="btn btn-link p-0" data-toggle="modal" data-target="#modalDelete"
+                            (click)="openModalForDelete(user)">Удалить</button>
+                        <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog"
+                            aria-labelledby="modalDelete" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Удалить выбранного
+                                            пользователя?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            #closebuttonDelete>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Вы уверены что хотите удалить "{{loginText}}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Нет</button>
+                                        <button type="button" class="btn btn-danger" (click)="deleteUser()">Да</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
