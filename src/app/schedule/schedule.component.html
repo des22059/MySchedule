@@ -32,9 +32,146 @@
                 <div class="lesson" *ngFor=" let lesson of cell.cells; let lessonIndex=index">
                     <app-lesson class="inner-lesson" [lesson]="lesson"></app-lesson>
                 </div>
-                <div *ngIf="isAdmin" class="lesson text-center new-lesson"><i
-                        class="material-icons">add_circle_outline</i></div>
+                <button type="button" data-toggle="modal" data-target="#createModal" *ngIf="isAdmin"
+                    class="lesson text-center new-lesson" (click)="addLesson()"><i
+                        class="material-icons">add_circle_outline</i></button>
+                <div class="modal fade" id="createModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Создание пары</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    (click)="createForm.reset();">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form -->
+                                <form #createForm="ngForm">
+                                    <!--Audience-->
+                                    <div class="form-group">
+                                        <label for="teacherSelect">Аудитория</label>
+                                        <select class="form-control" id="audienceSelect" [(ngModel)]="selectedAudience"
+                                            name="audienceSelector" #audienceSelect="ngModel" selected required>
+                                            <option *ngFor="let audience of audiences; let i = index"
+                                                [value]="audience.id">
+                                                {{audience.title}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="audienceSelect.errors && (audienceSelect.dirty || audienceSelect.touched)">
+                                            <div [hidden]="!audienceSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать аудиторию!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Group-->
+                                    <div class="form-group">
+                                        <label for="groupSelect">Группа</label>
+                                        <select class="form-control" id="groupSelect" [(ngModel)]="selectedGroup"
+                                            name="groupSelector" #groupSelect="ngModel" selected required>
+                                            <option *ngFor="let group of groups; let i = index" [value]="group.id">
+                                                {{group.title}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="groupSelect.errors && (groupSelect.dirty || groupSelect.touched)">
+                                            <div [hidden]="!groupSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать группу!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Teacher-->
+                                    <div class="form-group">
+                                        <label for="teacherSelect">Преподаватель</label>
+                                        <select class="form-control" id="teacherSelect" [(ngModel)]="selectedTeacher"
+                                            name="teacherSelector" #teacherSelect="ngModel" selected required>
+                                            <option *ngFor="let teacher of teachers; let i = index"
+                                                [value]="teacher.id">
+                                                {{teacher.name}} {{teacher.surname}} {{teacher.patronymic}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="teacherSelect.errors && (teacherSelect.dirty || teacherSelect.touched)">
+                                            <div [hidden]="!teacherSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать преподавателя!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Subject-->
+                                    <div class="form-group">
+                                        <label for="subjectSelect">Предмет</label>
+                                        <select class="form-control" id="subjectSelect" [(ngModel)]="selectedSubject"
+                                            name="subjectSelector" #subjectSelect="ngModel" selected required>
+                                            <option *ngFor="let subject of subjects; let i = index"
+                                                [value]="subject.id">
+                                                {{subject.title}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="subjectSelect.errors && (subjectSelect.dirty || subjectSelect.touched)">
+                                            <div [hidden]="!subjectSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать предмет!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Lesson type-->
+                                    <div class="form-group">
+                                        <label for="lessonTypeSelect">Тип занятия</label>
+                                        <select class="form-control" id="lessonTypeSelect"
+                                            [(ngModel)]="selectedLessonType" name="lessonTypeSelector"
+                                            #lessonTypeSelect="ngModel" selected required>
+                                            <option *ngFor="let lessonType of lessonTypes; let i = index"
+                                                [value]="lessonType.id">
+                                                {{lessonType.type}}<div class="w-100 h-100 d-inline-block"
+                                                    [style.background-color]="lessonType.color"></div>
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="lessonTypeSelect.errors && (lessonTypeSelect.dirty || lessonTypeSelect.touched)">
+                                            <div [hidden]="!lessonTypeSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать тип занятия!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Subject-->
+                                    <div class="form-group">
+                                        <label for="subjectSelect">Предмет</label>
+                                        <select class="form-control" id="subjectSelect" [(ngModel)]="selectedSubject"
+                                            name="subjectSelector" #subjectSelect="ngModel" selected required>
+                                            <option *ngFor="let subject of subjects; let i = index"
+                                                [value]="subject.id">
+                                                {{subject.title}}
+                                            </option>
+                                        </select>
+                                        <div
+                                            *ngIf="subjectSelect.errors && (subjectSelect.dirty || subjectSelect.touched)">
+                                            <div [hidden]="!subjectSelect.errors.required">
+                                                <p style="color:brown">Нужно выбрать предмет!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Week start-->
+                                    <div class="form-group">
+                                        <label for="subjectSelect">Неделя начала</label>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            (click)="createForm.reset();">Закрыть</button>
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                                            [disabled]="createForm.form.invalid"
+                                            (click)="
+                                            updateLesson(); createForm.reset();">{{forEdit ? 'Обновить' : 'Создать'}}</button>
+                                        <p class="m-1 text-right" style="color:brown"
+                                            [hidden]="!createForm.form.invalid">
+                                            Заполните все поля для продолжения</p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>

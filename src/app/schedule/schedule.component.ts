@@ -25,10 +25,71 @@ export class ScheduleComponent implements OnInit {
   headerDict: {};
   requestOptions: {};
 
-  groups: {};
-  selectedGroup: string;
-  groupsArray = [];
+  forEdit = false;
   faculties: {};
+
+  groups: {};
+  groupsArray = [];
+  selectedGroup: string;
+
+  audiences: {};
+  selectedAudience: string;
+
+  teachers: {};
+  selectedTeacher = [];
+
+  subjects: {};
+  selectedSubject = [];
+
+  lessonTypes: {};
+  selectedLessonType = [];
+
+  daterangepickerOptions = {
+    startDate: null,
+    endDate: null,
+    format: 'DD.MM.YYYY',
+    minDate: moment().add(-2, 'months').format('DD.MM.YYYY'),
+    maxDate: moment().add(2, 'months').format('DD.MM.YYYY'),
+    inactiveBeforeStart: true,
+    autoApply: false,
+    showRanges: true,
+    preDefinedRanges: [
+      {
+        name: 'Day After tomorrow',
+        value: {
+          start: moment().add(2, 'days'),
+          end: moment().add(2, 'days'),
+        },
+      },
+      {
+        name: 'Today',
+        value: {
+          start: moment(),
+          end: moment(),
+        },
+      },
+      {
+        name: 'Tomorrow',
+        value: {
+          start: moment().add(1, 'days'),
+          end: moment().add(1, 'days'),
+        },
+      },
+      {
+        name: 'This week',
+        value: {
+          start: moment(),
+          end: moment().add(7, 'days'),
+        },
+      },
+    ],
+    singleCalendar: false,
+    displayFormat: 'DD.MM.YYYY',
+    position: 'left',
+    disabled: false,
+    noDefaultRangeSelected: true,
+    disableBeforeStart: true,
+  };
 
   constructor(
     private http: HttpClient,
@@ -100,6 +161,12 @@ export class ScheduleComponent implements OnInit {
         this.faculties = data.result;
       });
   }
+
+  addLesson() {
+    console.log('Clicked!');
+  }
+
+  updateLesson() {}
 
   generate(now: moment.Moment) {
     const schedule = [];
