@@ -1,4 +1,25 @@
+<header style="margin-bottom: 2rem;">
+    <p>
+        <i class="material-icons" (click)="go(-1)">arrow_left</i>
+        <span>
+            {{dateService.date | async| moment }}-я неделя
+            {{dateService.dateWeekS| async| weekmoment }}-{{dateService.dateWeekE| async| weekmoment }}
+        </span>
+        <i class="material-icons" (click)="go(1)">arrow_right</i>
+    </p>
+</header>
 <div class="page-wrapper">
+    <div class="row mb-3">
+        <div class="col-6 text-left">
+            <label for="groupSelect">Выберите группу</label>
+            <select class="form-control" id="groupSelect" [(ngModel)]="selectedGroup" (change)="onGroupSelect()"
+                name="selector" #groupSelect="ngModel">
+                <option *ngFor="let group of groups; let i = index" [value]="group.id">
+                    {{group.title}}
+                </option>
+            </select>
+        </div>
+    </div>
     <div class="table">
         <div id="time">
             <div *ngFor="let time of lessonsTime; let i = index">

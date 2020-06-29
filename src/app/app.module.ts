@@ -8,7 +8,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { SelectorComponent } from './selector/selector.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -91,7 +90,6 @@ const appRouts: Routes = [
   declarations: [
     AppComponent,
     ScheduleComponent,
-    SelectorComponent,
     MomentPipe,
     WeekPipe,
     LessonComponent,

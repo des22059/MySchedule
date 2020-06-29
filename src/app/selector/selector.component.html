@@ -1,8 +1,0 @@
-<p>
-    <i class="material-icons" (click)="go(-1)">arrow_left</i>
-    <span>
-        {{dateService.date | async| moment }}-я неделя
-        {{dateService.dateWeekS| async| weekmoment }}-{{dateService.dateWeekE| async| weekmoment }}
-    </span>
-    <i class="material-icons" (click)="go(1)">arrow_right</i>
-</p>

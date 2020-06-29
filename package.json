@@ -23,6 +23,7 @@
     "@syncfusion/ej2-angular-inputs": "^18.1.56",
     "angular-color-picker": "^1.0.11",
     "bootstrap": "^4.5.0",
+    "current-week-number": "^1.0.7",
     "jquery": "^3.5.1",
     "moment": "^2.26.0",
     "ng-multiselect-dropdown": "^0.2.10",
