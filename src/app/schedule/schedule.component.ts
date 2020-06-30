@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { DateService } from '../shared/date.service';
 import { Lesson } from '../lesson';
@@ -22,15 +22,20 @@ interface WeekLine {
 })
 export class ScheduleComponent implements OnInit {
   readonly rootUrl = 'https://my-schedule-2020.herokuapp.com';
+  @ViewChild('closebutton') closebutton;
+
   headerDict: {};
   requestOptions: {};
 
   forEdit = false;
   faculties: {};
+  selectedFaculty: string;
+  selectedModalFaculty: string;
 
   groups: {};
   groupsArray = [];
   selectedGroup: string;
+  selectedModalGroup: string;
 
   audiences: {};
   selectedAudience: string;
@@ -44,52 +49,11 @@ export class ScheduleComponent implements OnInit {
   lessonTypes: {};
   selectedLessonType = [];
 
-  daterangepickerOptions = {
-    startDate: null,
-    endDate: null,
-    format: 'DD.MM.YYYY',
-    minDate: moment().add(-2, 'months').format('DD.MM.YYYY'),
-    maxDate: moment().add(2, 'months').format('DD.MM.YYYY'),
-    inactiveBeforeStart: true,
-    autoApply: false,
-    showRanges: true,
-    preDefinedRanges: [
-      {
-        name: 'Day After tomorrow',
-        value: {
-          start: moment().add(2, 'days'),
-          end: moment().add(2, 'days'),
-        },
-      },
-      {
-        name: 'Today',
-        value: {
-          start: moment(),
-          end: moment(),
-        },
-      },
-      {
-        name: 'Tomorrow',
-        value: {
-          start: moment().add(1, 'days'),
-          end: moment().add(1, 'days'),
-        },
-      },
-      {
-        name: 'This week',
-        value: {
-          start: moment(),
-          end: moment().add(7, 'days'),
-        },
-      },
-    ],
-    singleCalendar: false,
-    displayFormat: 'DD.MM.YYYY',
-    position: 'left',
-    disabled: false,
-    noDefaultRangeSelected: true,
-    disableBeforeStart: true,
-  };
+  selectedWeekday: number;
+  selectedLessonNumber: number;
+
+  weekStart: number;
+  weekEnd: number;
 
   constructor(
     private http: HttpClient,
@@ -106,7 +70,8 @@ export class ScheduleComponent implements OnInit {
     };
   }
   isAdmin = true;
-  lessons = LESSONS;
+  lessons = {};
+  lessonsArray = [];
   weekNames: string[] = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
   lessonsTime: string[] = [
     '8:45 - 10:20',
@@ -121,7 +86,6 @@ export class ScheduleComponent implements OnInit {
   //currentWeekNumber = require('current-week-number');
 
   ngOnInit() {
-    this.dateService.date.subscribe(this.generate.bind(this));
     this.http
       .get(this.rootUrl + '/api/groups', this.requestOptions)
       .subscribe((data: ResponseAPI) => {
@@ -133,8 +97,6 @@ export class ScheduleComponent implements OnInit {
             this.groupsArray.push(this.groups[key]);
           }
         }
-        console.log('GroupsArray:');
-        console.log(this.groupsArray);
       });
     this.http
       .get(this.rootUrl + '/api/faculties', this.requestOptions)
@@ -142,31 +104,223 @@ export class ScheduleComponent implements OnInit {
         console.log(data);
         this.faculties = data.result;
       });
+    this.dateService.date.subscribe(this.generate.bind(this));
   }
 
   go(dir: number) {
     this.dateService.changeWeek(dir);
-    console.log(this.dateService.date);
-  }
-
-  onGroupSelect() {
-    console.log('Group changed!');
     this.http
       .get(
-        this.rootUrl + '/api/schedules?group=' + this.selectedGroup,
+        this.rootUrl +
+          '/api/schedules?week=' +
+          this.dateService.date.value.week() +
+          '&group=' +
+          this.selectedGroup,
         this.requestOptions
       )
       .subscribe((data: ResponseAPI) => {
         console.log(data);
-        this.faculties = data.result;
+        this.lessons = data.result;
+        this.lessonsArray = [];
+        for (let key in this.lessons) {
+          if (this.lessons.hasOwnProperty(key)) {
+            this.lessonsArray.push(this.lessons[key]);
+          }
+        }
+        this.dateService.date.subscribe(this.generate.bind(this));
       });
   }
 
-  addLesson() {
-    console.log('Clicked!');
+  onFacultySelect() {
+    if (this.selectedFaculty != 'Any') {
+      this.http
+        .get(
+          this.rootUrl + '/api/groups?faculty=' + this.selectedFaculty,
+          this.requestOptions
+        )
+        .subscribe((data: ResponseAPI) => {
+          console.log(data);
+          this.groups = data.result;
+          this.groupsArray = [];
+          for (let key in this.groups) {
+            if (this.groups.hasOwnProperty(key)) {
+              this.groupsArray.push(this.groups[key]);
+            }
+          }
+          if (this.groupsArray.length > 0) {
+            this.selectedGroup = this.groupsArray[0].id;
+            this.onGroupSelect();
+          }
+        });
+    } else {
+      this.http
+        .get(this.rootUrl + '/api/groups', this.requestOptions)
+        .subscribe((data: ResponseAPI) => {
+          console.log(data);
+          this.groups = data.result;
+          this.groupsArray = [];
+          for (let key in this.groups) {
+            if (this.groups.hasOwnProperty(key)) {
+              this.groupsArray.push(this.groups[key]);
+            }
+          }
+          if (this.groupsArray.length > 0) {
+            this.selectedGroup = this.groupsArray[0].id;
+            this.onGroupSelect();
+          }
+        });
+    }
   }
 
-  updateLesson() {}
+  onGroupSelect() {
+    console.log('Autochanged!');
+    this.http
+      .get(
+        this.rootUrl +
+          '/api/schedules?week=' +
+          this.dateService.date.value.week() +
+          '&group=' +
+          this.selectedGroup,
+        this.requestOptions
+      )
+      .subscribe((data: ResponseAPI) => {
+        console.log(data);
+        this.lessons = data.result;
+        this.lessonsArray = [];
+        for (let key in this.lessons) {
+          if (this.lessons.hasOwnProperty(key)) {
+            this.lessonsArray.push(this.lessons[key]);
+          }
+        }
+        this.dateService.date.subscribe(this.generate.bind(this));
+      });
+  }
+
+  onTeacherChange() {
+    this.http
+      .get(
+        this.rootUrl + '/api/subjects?teacher=' + this.selectedTeacher,
+        this.requestOptions
+      )
+      .subscribe((data: ResponseAPI) => {
+        console.log(data);
+        this.subjects = data.result;
+      });
+  }
+
+  addLesson(weekday: number, lessonNumber: number) {
+    this.selectedWeekday = weekday + 1;
+    this.selectedLessonNumber = lessonNumber + 1;
+    this.selectedModalFaculty = this.selectedFaculty;
+    this.selectedModalGroup = this.selectedGroup;
+    this.http
+      .get(this.rootUrl + '/api/audiences', this.requestOptions)
+      .subscribe((data: ResponseAPI) => {
+        this.audiences = data.result;
+        console.log(this.audiences);
+      });
+    this.http
+      .get(this.rootUrl + '/api/teachers', this.requestOptions)
+      .subscribe((data: ResponseAPI) => {
+        console.log(data);
+        this.teachers = data.result;
+      });
+    // this.http
+    //   .get(this.rootUrl + '/api/subjects', this.requestOptions)
+    //   .subscribe((data: ResponseAPI) => {
+    //     console.log(data);
+    //     this.subjects = data.result;
+    //   });
+    this.http
+      .get(this.rootUrl + '/api/lesson_types', this.requestOptions)
+      .subscribe((data: ResponseAPI) => {
+        console.log(data);
+        this.lessonTypes = data.result;
+      });
+  }
+
+  onModalFacultySelect() {
+    if (this.selectedModalFaculty != 'Any') {
+      this.http
+        .get(
+          this.rootUrl + '/api/groups?faculty=' + this.selectedModalFaculty,
+          this.requestOptions
+        )
+        .subscribe((data: ResponseAPI) => {
+          console.log(data);
+          this.groups = data.result;
+          this.groupsArray = [];
+          for (let key in this.groups) {
+            if (this.groups.hasOwnProperty(key)) {
+              this.groupsArray.push(this.groups[key]);
+            }
+          }
+        });
+    } else {
+      this.http
+        .get(this.rootUrl + '/api/groups', this.requestOptions)
+        .subscribe((data: ResponseAPI) => {
+          console.log(data);
+          this.groups = data.result;
+          this.groupsArray = [];
+          for (let key in this.groups) {
+            if (this.groups.hasOwnProperty(key)) {
+              this.groupsArray.push(this.groups[key]);
+            }
+          }
+        });
+    }
+  }
+
+  updateLesson() {
+    const body = {
+      audience: this.selectedAudience,
+      group: this.selectedModalGroup,
+      teacher: this.selectedTeacher,
+      subject: this.selectedSubject,
+      lessonType: this.selectedLessonType,
+      day: this.selectedWeekday,
+      lessonNumber: this.selectedLessonNumber,
+      weekStart: this.weekStart,
+      weekEnd: this.weekEnd,
+    };
+    console.log(JSON.stringify(body));
+    return this.http
+      .post(
+        this.rootUrl + '/api/schedules',
+        JSON.stringify(body),
+        this.requestOptions
+      )
+      .subscribe((data: ResponseAPI) => {
+        console.log(data);
+        if (data.info.statusCode == 200) {
+          this.toastr.success('Lesson created!');
+          this.http
+            .get(
+              this.rootUrl +
+                '/api/schedules?week=' +
+                this.dateService.date.value.week() +
+                '&group=' +
+                this.selectedGroup,
+              this.requestOptions
+            )
+            .subscribe((data: ResponseAPI) => {
+              console.log(data);
+              this.lessons = data.result;
+              this.lessonsArray = [];
+              for (let key in this.lessons) {
+                if (this.lessons.hasOwnProperty(key)) {
+                  this.lessonsArray.push(this.lessons[key]);
+                }
+              }
+              this.dateService.date.subscribe(this.generate.bind(this));
+            });
+          this.closebutton.nativeElement.click();
+        } else {
+          this.toastr.error('Error: ' + data.info.statusCode.toString());
+        }
+      });
+  }
 
   generate(now: moment.Moment) {
     const schedule = [];
@@ -182,10 +336,8 @@ export class ScheduleComponent implements OnInit {
       });
     }
 
-    this.lessons.forEach((lesson) => {
-      lesson.position.forEach((pos) => {
-        schedule[lesson.day].weekLines[pos].cells.push(lesson);
-      });
+    this.lessonsArray.forEach((x) => {
+      schedule[x.day - 1].weekLines[x.lessonNumber - 1].cells.push(x);
     });
 
     this.schedule = schedule;

@@ -1,7 +1,7 @@
 <div class=title-wrap>
-    <p class="title">{{lesson.title}}</p>
+    <p class="title" [style.color]="lesson.lessonType.color">{{lesson.discipline.subject.title}}</p>
 </div>
 <div class="lesson-footer">
-    <p class="type">{{lesson.type}}</p>
-    <p class="place">{{lesson.audience}}({{lesson.building}})</p>
+    <p class="type">{{lesson.lessonType.type}}</p>
+    <p class="place">{{lesson.audience.audienceNumber}} ({{lesson.audience.building.title}})</p>
 </div>
